@@ -3,17 +3,18 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">	
 	<display-name>curso-jsp</display-name>
-	<servlet>
+	<filter>
 		<description>
 		</description>
-		<display-name>ServletLogin</display-name>
-		<servlet-name>ServletLogin</servlet-name>
-		<servlet-class>servlets.ServletLogin</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ServletLogin</servlet-name>
-		<url-pattern>/ServletLogin</url-pattern>
-	</servlet-mapping>
+		<display-name>FilterAutenticacao</display-name>
+		<filter-name>FilterAutenticacao</filter-name>
+		<filter-class>fillter.FilterAutenticacao</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>FilterAutenticacao</filter-name>
+		<url-pattern>/FilterAutenticacao</url-pattern>
+	</filter-mapping>
+	
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
@@ -30,5 +31,5 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
-	poremé necessario apena o index.jsp.
+	porem é necessário apenas o index.jsp.
   --> 
