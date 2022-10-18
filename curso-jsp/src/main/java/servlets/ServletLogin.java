@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 
+import dao.DAOLoginRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,6 +22,9 @@ import model.ModelLogin;
 public class ServletLogin extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
+	
+	//instanciação da classe DAOLogimRepository
+	private DAOLoginRepository daoLoginRepository = new DAOLoginRepository();
 
     public ServletLogin() {
 
@@ -31,7 +35,6 @@ public class ServletLogin extends HttpServlet {
 	}
 
 	/*Recebe os dados enviados por um 	formulario*/
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		//System.out.println(request.getParameter("nome"));
@@ -42,47 +45,55 @@ public class ServletLogin extends HttpServlet {
 		String senha = (request.getParameter("senha"));
 		String url = request.getParameter("url");//pegando a url do index
 		
-		/*fazer validação do objeto se os dados foram mesmo informados. senão redirecionar com uma mesagem 
-		 * para a pag do index.jsp*/
-		if(login != null && !login.isEmpty() && senha != null && !senha.isEmpty()) {
-
-			/*instanciar a classe model(objeto que receberá os parâmetros)*/
-			ModelLogin modelLogin = new ModelLogin();
-			modelLogin.setLogin(login);
-			modelLogin.setSenha(senha);
-			
-			//simulando login
-			if(modelLogin.getLogin().equalsIgnoreCase("admin") && 
-					modelLogin.getSenha().equalsIgnoreCase("admin")) {
-				
-				/*passa-se o usuario e o objeto da seçã, podendo ser apenas o atributo para não ficar a senha carregada
-				 * na seção*/
-				request.getSession().setAttribute("usuario", modelLogin.getLogin());//atributo de seção
-				
-				//antes de redirecionar fazer a validação da url
-				if (url == null || url.equals( "null")) {
+		try {		
+				/*fazer validação do objeto se os dados foram mesmo informados. senão redirecionar com uma mensagem 
+				 * para a pagina do index.jsp*/
+				if(login != null && !login.isEmpty() && senha != null && !senha.isEmpty()) {
+		
+					/*instanciar a classe model(objeto que receberá os parâmetros)*/
+					ModelLogin modelLogin = new ModelLogin();
+					modelLogin.setLogin(login);
+					modelLogin.setSenha(senha);
 					
-					url ="principal/principal.jsp"; //pag. principal
+					//simulando login
+					/*if(modelLogin.getLogin().equalsIgnoreCase("admin") && 
+							modelLogin.getSenha().equalsIgnoreCase("admin")) {*/
+					//retirando a condição de simulação ecolocandono lugar
+					if(daoLoginRepository.validarAutenticao(modelLogin)) {
+						
+						/*passa-se o usuario e o objeto da seçã, podendo ser apenas o atributo para não ficar a senha carregada
+						 * na seção*/
+						request.getSession().setAttribute("usuario", modelLogin.getLogin());//atributo de seção
+						
+						//antes de redirecionar fazer a validação da url
+						if (url == null || url.equals("null")) {
+							
+							url ="principal/principal.jsp"; //pag. principal
+							
+						}
+						
+						//RequestDispatcher redirecionar = request.getRequestDispatcher("/principal/principal.jsp");
+						RequestDispatcher redirecionar = request.getRequestDispatcher(url);//deixar dinâmico
+						redirecionar.forward(request, response);
+						
+					} else {
+						
+						RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");//redireciona para o index,com '/' volta uma pag	
+						request.setAttribute("msg", "Erro! Informe login e senha");//informa mensagem
+						redirecionar.forward(request, response);//faz o redirecionamento para o index.jsp
+						
+					}
 					
+				} else {
+					RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");//redireciona para o index
+					request.setAttribute("msg", "Erro! Informe login e senha");//informa mensagem
+					redirecionar.forward(request, response);//faz o redirecionamento para o index.jsp
 				}
 				
-				//RequestDispatcher redirecionar = request.getRequestDispatcher("/principal/principal.jsp");
-				RequestDispatcher redirecionar = request.getRequestDispatcher(url);//deixar dinâmico
-				redirecionar.forward(request, response);
-				
-			} else {
-				
-				RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");//redireciona para o index,com '/' volta uma pag	
-				request.setAttribute("msg", "Erro! Informe login e senha");//informa mensagem
-				redirecionar.forward(request, response);//faz o redirecionamento para o index.jsp
-				
-			}
-		} else {
-			RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");//redireciona para o index
-			request.setAttribute("msg", "Erro! Informe login e senha");//informa mensagem
-			redirecionar.forward(request, response);//faz o redirecionamento para o index.jsp
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 			
-	}
+	} //fim do doPost
 
-}
+}//fim @WebServlet

@@ -46,6 +46,7 @@ public class FilterAutenticacao implements Filter {
 
 		try {
 			connection.close();
+			
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -91,18 +92,21 @@ public class FilterAutenticacao implements Filter {
 				} else {	
 					// acima dele é feita as validações e ele deixa o processo continuar
 					chain.doFilter(request, response);	
-					// no index.jsp, passa-se a url
-					
-					connection.commit();//comita as alterações no BD se tudo estiver certo
+					// no index.jsp, passa-se a url					
 				}
+			
+			connection.commit();//comita as alterações no BD se tudo estiver certo
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			
+			e.printStackTrace();//excessão do sistema
+			
 			try {
-				connection.rollback();
+				connection.rollback(); //se houver algum erro faz-se um rollback
+				
 			} catch (SQLException e1) {
 				// se houver uma excessão  retorna erro do rolback
-				e1.printStackTrace();
+				e1.printStackTrace(); //excessão do rollback, banco
 			}
 		}
 
