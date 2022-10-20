@@ -31,7 +31,9 @@ public class ServletLogin extends HttpServlet {
     }
 	/*Recebe os dados pela URL em parâmetros*/
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException , IOException {
-
+		
+		//retirar tela em branco 
+		doPost(request, response);
 	}
 
 	/*Recebe os dados enviados por um 	formulario*/
@@ -79,19 +81,24 @@ public class ServletLogin extends HttpServlet {
 					} else {
 						
 						RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");//redireciona para o index,com '/' volta uma pag	
-						request.setAttribute("msg", "Erro! Informe login e senha");//informa mensagem
+						request.setAttribute("msg", "Por Favor! Informe login e senha corretamente!");//informa mensagem
 						redirecionar.forward(request, response);//faz o redirecionamento para o index.jsp
 						
 					}
 					
 				} else {
 					RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");//redireciona para o index
-					request.setAttribute("msg", "Erro! Informe login e senha");//informa mensagem
+					request.setAttribute("msg", "Erro! Informe login e senha corretamente!");//informa mensagem
 					redirecionar.forward(request, response);//faz o redirecionamento para o index.jsp
 				}
 				
 		} catch (Exception e) {
 			e.printStackTrace();
+			
+			//redirecionar a msg para a tela de erro se houver alguma exception
+			RequestDispatcher redirecionar = request.getRequestDispatcher("erros.jsp");//redireciona para o erros.jsp
+			request.setAttribute("msg", e.getMessage());
+			redirecionar.forward(request, response);
 		}
 			
 	} //fim do doPost

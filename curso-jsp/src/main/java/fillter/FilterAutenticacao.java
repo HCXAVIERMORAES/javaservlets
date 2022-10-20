@@ -101,6 +101,12 @@ public class FilterAutenticacao implements Filter {
 			
 			e.printStackTrace();//excessão do sistema
 			
+			//redirecionar a msg para a tela de erros se houver alguma exception
+			RequestDispatcher redirecionar = request.getRequestDispatcher("erros.jsp");
+			request.setAttribute("msg", e.getMessage());
+			redirecionar.forward(request, response);
+			
+			
 			try {
 				connection.rollback(); //se houver algum erro faz-se um rollback
 				
