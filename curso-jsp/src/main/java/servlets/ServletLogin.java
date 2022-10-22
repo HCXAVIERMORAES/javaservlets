@@ -31,9 +31,19 @@ public class ServletLogin extends HttpServlet {
     }
 	/*Recebe os dados pela URL em parâmetros*/
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException , IOException {
+		//fazendo logout do sistema. Botão Logout (tag <a href="/ServletLogin?acao=Logout") 
+		String acao = request.getParameter("acao");
+		if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("Logout")) {
+			request.getSession().invalidate();//invalida a sessão
+			
+			RequestDispatcher redireciona = request.getRequestDispatcher("index.jsp"); //redireciona para o index
+			redireciona.forward(request, response);
+			
+		} else {
 		
-		//retirar tela em branco 
-		doPost(request, response);
+			//retirar tela em branco 
+			doPost(request, response); //continua processo normal
+		}
 	}
 
 	/*Recebe os dados enviados por um 	formulario*/

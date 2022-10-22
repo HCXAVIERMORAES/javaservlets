@@ -33,17 +33,19 @@
 							<!-- Main-body start -->
 							<div class="main-body">
 								<div class="page-wrapper">
+								
 									<!-- Page-body start -->
 									<div class="page-body">
 										<div class="row">
 										<!-- area que possuia a simulação de dados q foi retirado, onde será feito os dados 
 										do sistema atual, usar include jsp com nome do arquivo para simular(simulacao-original)-->
-										<h1>funcionalidades do sistema</h1>
+										<h3>Conteúdo página base das páginas do sistema</h3>
 
 										</div>
 									</div>
 									<!-- Page-body end -->
 								</div>
+								
 								<div id="styleSelector"></div>
 							</div>
 						</div>
