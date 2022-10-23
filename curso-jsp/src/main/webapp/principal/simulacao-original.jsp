@@ -226,7 +226,7 @@
 									</div>
 								</div>
 								<div class="d-inline-block align-middle">
-									<img src="assets/images/avatar-4.jpg" alt="user image"
+									<img src="<%=request.getContextPath()%>/assets/images/avatar-4.jpg" alt="user image"
 										class="img-radius img-40 align-top m-r-15">
 									<div class="d-inline-block">
 										<h6>John Deo</h6>
@@ -250,7 +250,7 @@
 									</div>
 								</div>
 								<div class="d-inline-block align-middle">
-									<img src="assets/images/avatar-5.jpg" alt="user image"
+									<img src="<%=request.getContextPath()%>/assets/images/avatar-5.jpg" alt="user image"
 										class="img-radius img-40 align-top m-r-15">
 									<div class="d-inline-block">
 										<h6>Jenifer Vintage</h6>
@@ -274,7 +274,7 @@
 									</div>
 								</div>
 								<div class="d-inline-block align-middle">
-									<img src="assets/images/avatar-3.jpg" alt="user image"
+									<img src="<%=request.getContextPath()%>/assets/images/avatar-3.jpg" alt="user image"
 										class="img-radius img-40 align-top m-r-15">
 									<div class="d-inline-block">
 										<h6>William Jem</h6>
@@ -298,7 +298,7 @@
 									</div>
 								</div>
 								<div class="d-inline-block align-middle">
-									<img src="assets/images/avatar-2.jpg" alt="user image"
+									<img src="<%=request.getContextPath()%>/assets/images/avatar-2.jpg" alt="user image"
 										class="img-radius img-40 align-top m-r-15">
 									<div class="d-inline-block">
 										<h6>David Jones</h6>
@@ -336,7 +336,7 @@
 		</div>
 		<div class="card-block">
 			<div class="align-middle m-b-30">
-				<img src="assets/images/avatar-2.jpg" alt="user image"
+				<img src="<%=request.getContextPath()%>/assets/images/avatar-2.jpg" alt="user image"
 					class="img-radius img-40 align-top m-r-15">
 				<div class="d-inline-block">
 					<h6>David Jones</h6>
@@ -344,7 +344,7 @@
 				</div>
 			</div>
 			<div class="align-middle m-b-30">
-				<img src="assets/images/avatar-1.jpg" alt="user image"
+				<img src="<%=request.getContextPath()%>/assets/images/avatar-1.jpg" alt="user image"
 					class="img-radius img-40 align-top m-r-15">
 				<div class="d-inline-block">
 					<h6>David Jones</h6>
@@ -352,7 +352,7 @@
 				</div>
 			</div>
 			<div class="align-middle m-b-30">
-				<img src="assets/images/avatar-3.jpg" alt="user image"
+				<img src="<%=request.getContextPath()%>/assets/images/avatar-3.jpg" alt="user image"
 					class="img-radius img-40 align-top m-r-15">
 				<div class="d-inline-block">
 					<h6>David Jones</h6>
@@ -360,7 +360,7 @@
 				</div>
 			</div>
 			<div class="align-middle m-b-30">
-				<img src="assets/images/avatar-4.jpg" alt="user image"
+				<img src="<%=request.getContextPath()%>/assets/images/avatar-4.jpg" alt="user image"
 					class="img-radius img-40 align-top m-r-15">
 				<div class="d-inline-block">
 					<h6>David Jones</h6>
@@ -368,7 +368,7 @@
 				</div>
 			</div>
 			<div class="align-middle m-b-10">
-				<img src="assets/images/avatar-5.jpg" alt="user image"
+				<img src="<%=request.getContextPath()%>/assets/images/avatar-5.jpg" alt="user image"
 					class="img-radius img-40 align-top m-r-15">
 				<div class="d-inline-block">
 					<h6>David Jones</h6>
