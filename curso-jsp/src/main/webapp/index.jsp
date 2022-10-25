@@ -52,7 +52,7 @@
 	Para interceptar os dados vindos da tela usa-se no form um metho=post
 	Para organizar a tela coloca-se dentro de uma tabela-->
 	
-	<form action="ServletLogin" method="post" class="row g-3 needs-validation" novalidate>
+	<form action="<%=request.getContextPath() %>/ServletLogin" method="post" class="row g-3 needs-validation" novalidate>
 		<!-- url que veio do filtter. O hidden esconde e o '=' é para passar a url, imprimir o valor passado no html,
 		 ele se pega no ServletLogin -->
 		<input type="hidden" <%= request.getParameter("url") %>>		
