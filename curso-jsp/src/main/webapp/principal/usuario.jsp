@@ -42,8 +42,9 @@
 											<div class="col-md-10">
 												<div class="card">
 													<div class="card-header">
-														<h5>Cadastro de Usuarios</h5>
+														<h5>Cadastro de Usuários</h5>
 														<!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
+													<span>${msg}</span>
 													</div>
 													<div class="card-block">
 
@@ -87,19 +88,21 @@
 															</div>
 															-->
 															<!-- button Rounded -->
-																								
-					<button class="btn btn-primary btn-round waves-effect waves-light">Novo</button>
-					<button class="btn btn-success btn-round waves-effect waves-light">Salvar</button>
-				<!--  	<button class="btn btn-info btn-round waves-effect waves-light">Excluir</button>-->
-					<button class="btn btn-danger btn-round waves-effect waves-light">Excluir</button>																															
-													</form> <!-- fim form cadastro -->
+
+															<button
+																class="btn btn-primary btn-round waves-effect waves-light">Novo</button>
+															<button
+																class="btn btn-success btn-round waves-effect waves-light">Salvar</button>
+															<!--  	<button class="btn btn-info btn-round waves-effect waves-light">Excluir</button>-->
+															<button
+																class="btn btn-danger btn-round waves-effect waves-light">Excluir</button>
+														</form> <!-- fim form cadastro -->
 												</div>
 											</div>
 										</div>
-									</div>
-								</div>
-								<!--fecha linha -row  -->
-
+									</div><!--fecha linha -row  -->
+									
+								</div>	
 							</div>
 							<!-- Page-body end -->
 						</div>
