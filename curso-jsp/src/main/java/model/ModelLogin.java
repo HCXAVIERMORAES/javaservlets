@@ -13,6 +13,16 @@ public class ModelLogin implements Serializable{ //sempre se implementa o Serial
 	private String login;
 	private String senha;
 	
+	//metodo para testar se existe id
+	public boolean isNovo() {
+		if(this.id == null) {
+			return true; /*inserir um novo*/		
+		} else if(this.id != null && this.id > 0) {
+			return false;/*atualizar*/
+		}
+		 return id == null;
+	}
+	
 	//get e set
 	
 	public String getLogin() {
@@ -47,38 +57,5 @@ public class ModelLogin implements Serializable{ //sempre se implementa o Serial
 		this.email = email;
 	}
 	
-	/*
-	//hashCode e equals
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
-		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ModelLogin other = (ModelLogin) obj;
-		if (login == null) {
-			if (other.login != null)
-				return false;
-		} else if (!login.equals(other.login))
-			return false;
-		if (senha == null) {
-			if (other.senha != null)
-				return false;
-		} else if (!senha.equals(other.senha))
-			return false;
-		return true;
-	}
-	*/
-
-	
+		
 }

@@ -8,7 +8,7 @@
 </head>
 <body>
 
-	<h1>Erro no sistema, entere em contato com o suporte do sistema</h1>
+	<h1>Erro no sistema, entre em contato com o suporte do sistema</h1>
 	<%
 		out.print(request.getAttribute("msg")); //pegar a mesagem do console e mostrar na tela
 	%>
