@@ -104,6 +104,9 @@
 															<button class="btn btn-success btn-round waves-effect waves-light">Salvar</button>
 															
 															<button type="button" class="btn btn-danger btn-round waves-effect waves-light" onclick="criarDeleteComAjax()">Excluir</button>
+															<!-- botão do modal  Button trigger modal-->															
+															<button type="button" class="btn btn-secondary btn-round" data-toggle="modal" data-target="#exampleModalUsuario">Pesquisar</button>
+														
 														</form>
 														<!-- fim form cadastro -->
 
@@ -129,8 +132,79 @@
 
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
 	
+	<!-- o modal deve ficar fora da estrutura da pagina e antes do scrip ou antes do body -->
+	<!-- Modal -->
+<div class="modal fade" id="exampleModalUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de Usuário</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+					<div class="input-group mb-3">
+						<input type="text" class="form-control" placeholder="Nome" aria-label="nome" id="nomeBusca" aria-describedby="basic-addon2">
+						<div class="input-group-append">
+							<button class="btn btn-success" type="button" onclick="buscarUsuario();">Buscar</button>
+						</div>
+					</div>
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Id</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Select</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+						</tbody>
+					</table>
+
+				</div> <!-- fim modal-body -->
+				
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-round" data-dismiss="modal">Fechar</button>
+      <!--    <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+	
 	<script type="text/javascript">
 	
+		/*funções do modal, metod debusca por ajax, modal não pode haver redirecionamento de tela*/
+		function buscarUsuario() {
+			
+			var nomeBusca = document.getElementById('nomeBusca').value;
+			
+			if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') {/*validando q tem q ter valor para buscar no banco. .trim() retira espaços vazios*/
+				
+				var urlAction = document.getElementById('formUser').action;	/*pega o action do form*/
+				
+				$.ajax({
+					method : "get",
+					url : urlAction,
+					data : "nomeBusca=" + nomeBusca +'&acao=buscarUserAjax',
+					success : function (response) {
+						alert(response); 
+						
+					}
+					
+				}).fail(function (xhr, status, errorThrown) {/*se houver algum erro - xhr é padrao -*/
+					
+					alert('Erro ao buscar usuário por nome' + xhr.responseText);
+					
+				});	
+				
+			}
+		}
+		
 		function limparForm() {
 			var elementos = document.getElementById('formUser').elements;	/*retorna os elemmentos de dentro do form*/
 			for(p= 0; p < elementos.length; p++) {
@@ -168,10 +242,8 @@
 					
 					alert('Erro ao deletar usuário por id: ' + xhr.responseText);
 					
-				});
-				
-			}
-			
+				});				
+			}			
 		}
 		
 	
