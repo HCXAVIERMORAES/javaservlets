@@ -3,6 +3,8 @@ package servlets;
 import java.io.IOException;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -58,7 +60,7 @@ public class ServletUsuarioController extends HttpServlet {
 				
 				ObjectMapper mapper = new ObjectMapper();
 				
-				String json = mapper.writValueASString(dadosJsonUser);
+				String json = mapper.writeValueAsString(dadosJsonUser);
 				
 				response.getWriter().write(json); //mensagem de resposta
 				

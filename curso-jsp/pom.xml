@@ -9,37 +9,30 @@
 	<description>curso jdev treinamento. Modulo 22</description>
 
 	<dependencies>
+
 		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
-		<!-- 
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.0.0.jre6</version>
-		</dependency>
-		-->
-		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
-		 
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.3.2</version>
 		</dependency>
-		
+
 		<!-- dependencia para Json -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>2.9.8</version>
-		</dependency>
-		
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-databind</artifactId>
-		    <version>2.13.4.1</version>
+		    <version>2.13.4</version>
 		</dependency>
-		
+
+	<!--  	<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.8</version>
+			<type>war</type>
+		</dependency>
+		-->
 	</dependencies>
 
 	<build>
@@ -58,5 +51,6 @@
 		</plugins>
 	</build>
 	<url>https://maven.apache.org</url>
+	
 	<packaging>war</packaging>
 </project>
