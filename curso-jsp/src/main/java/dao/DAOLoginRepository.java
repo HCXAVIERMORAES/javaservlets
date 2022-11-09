@@ -24,7 +24,7 @@ public class DAOLoginRepository {
 	//metodo de validação do login, que devereceber um objeto com o login e senha, no caso classe ModelLogin
 	public boolean validarAutenticao(ModelLogin modelLogin) throws Exception{
 		//sql de consulta ao banco
-		String sql = " select * from model_login where upper(login) = upper(?) and senha = ? ";
+		String sql = " select * from model_login where upper(login) = upper(?) and upper(senha) = upper(?) ";
 		
 		//objeto para preparar o sql
 		PreparedStatement statement = connetion.prepareStatement(sql);

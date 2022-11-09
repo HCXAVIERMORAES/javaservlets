@@ -64,14 +64,11 @@ public class ServletLogin extends HttpServlet {
 		
 					/*instanciar a classe model(objeto que receberá os parâmetros)*/
 					ModelLogin modelLogin = new ModelLogin();
+					
 					modelLogin.setLogin(login);
 					modelLogin.setSenha(senha);
 					
-					//simulando login
-					/*if(modelLogin.getLogin().equalsIgnoreCase("admin") && 
-							modelLogin.getSenha().equalsIgnoreCase("admin")) {*/
-					//retirando a condição de simulação ecolocandono lugar
-					if(daoLoginRepository.validarAutenticao(modelLogin)) {
+					if(daoLoginRepository.validarAutenticao(modelLogin)) {/*simulando login*/		
 						
 						/*passa-se o usuario e o objeto da seçã, podendo ser apenas o atributo para não ficar a senha carregada
 						 * na seção*/

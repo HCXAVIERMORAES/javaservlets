@@ -5,6 +5,7 @@
 	<groupId>curso-jsp</groupId>
 	<artifactId>curso-jsp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
 	<name>curso-jsp</name>
 	<description>curso jdev treinamento. Modulo 22</description>
 
@@ -19,20 +20,31 @@
 
 		<!-- dependencia para Json -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.13.4</version>
 		</dependency>
+		
+		<!-- dependencia para o jstl 
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+		</dependency>
 
-	<!--  	<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.9.8</version>
-			<type>war</type>
+		<dependency>
+			<groupId>jakarta.servlet.jsp.jstl</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 		-->
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
+			<version>2.0.0</version>
+		</dependency>		
+		
 	</dependencies>
 
 	<build>
@@ -52,5 +64,4 @@
 	</build>
 	<url>https://maven.apache.org</url>
 	
-	<packaging>war</packaging>
 </project>

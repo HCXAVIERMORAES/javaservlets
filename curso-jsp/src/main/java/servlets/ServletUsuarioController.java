@@ -8,29 +8,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
-
 /**
  * classe Servle de controle do arquivo usuarios.jsp (chamada por ele)
  */
-public class ServletUsuarioController extends HttpServlet {
-	
-	private static final long serialVersionUID = 1L;
-	
-	//inicializando a classe DAOUsuarioRepository
-	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 
+@WebServlet(urlPatterns = {"/ServletUsuarioController"})
+public class ServletUsuarioController extends ServletGenericUtil {
+	
+	private static final long serialVersionUID = 1L;	
+	
+	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
     
-    public ServletUsuarioController() {
+   public ServletUsuarioController() {
         
     }
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//response.getWriter().append("Served at: ").append(request.getContextPath()); retira-se do original
-		
+			
 		try {			
 			// metodo de deletar
 			String acao = request.getParameter("acao");
@@ -40,6 +38,10 @@ public class ServletUsuarioController extends HttpServlet {
 				String idUser = request.getParameter("id"); // operar na tele
 				
 				daoUsuarioRepository.deletarUser(idUser); //chama o metodo deletar
+				
+				//para recarregar apos rediredionar
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
+				request.setAttribute("modelLogins", modelLogins);
 				
 				request.setAttribute("msg", "Dados EXCLUIDOS com sucesso!");
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
@@ -56,7 +58,7 @@ public class ServletUsuarioController extends HttpServlet {
 				
 				String nomeBusca = request.getParameter("nomeBusca"); 
 					//System.out.println(nomeBusca); para testar 1ª partedo teste
-				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultaUsuarioList(nomeBusca); 
+				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultaUsuarioList(nomeBusca, super.getUserLogado(request)); 
 				
 				ObjectMapper mapper = new ObjectMapper();
 				
@@ -64,9 +66,35 @@ public class ServletUsuarioController extends HttpServlet {
 				
 				response.getWriter().write(json); //mensagem de resposta
 				
-			}			
+			} /*metodo para buscar o id da pesquisa do modal*/
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {				
+				
+				String id = request.getParameter("id");
+				
+				ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(id, super.getUserLogado(request));
+				
+				//para recarregar apos redirecionamento
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
+				request.setAttribute("modelLogins", modelLogins);
+				
+				request.setAttribute("msg", "Usuário em EDIÇÃO!");
+				request.setAttribute("modolLogin", modelLogin); //redireciona
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);	
+				
+			}	/*metodo q utiliza o jstl , para lista dinamica*/
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
+				//criando lista dinamica com todos os usuarios 
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
+				//padrao, autera-se a msg e as variaves
+				request.setAttribute("msg", "Usuário CARREGADOS!");
+				request.setAttribute("modelLogins", modelLogins); //deve haver uma variavel so para carregar a lista
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			}
 			
 			else {
+				//para recarregar apos redirecionar
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
+				request.setAttribute("modelLogins", modelLogins);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response); //fluxo normal
 			}
 		
@@ -82,8 +110,7 @@ public class ServletUsuarioController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//doGet(request, response);
 		
-		try {
-			
+		try {			
 			String msg = "Dados salvos com sucesso!";
 			
 			// 1ª intercepta os atributos do form. do usuario;
@@ -116,9 +143,11 @@ public class ServletUsuarioController extends HttpServlet {
 					msg = "Dados -- ATUALIZADOS -- com sucesso!";
 				}
 				
-				modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin); //chama o metodo pra gravar no BD
+				modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin, super.getUserLogado(request)); //chama o metodo pra gravar no BD
 			}
-			
+			//para recarregar apos redirecionar
+			List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
+			request.setAttribute("modelLogins", modelLogins);
 			
 			//menssagem de aviso
 			request.setAttribute("msg", msg );

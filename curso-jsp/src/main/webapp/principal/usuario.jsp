@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -113,8 +116,36 @@
 													</div>
 												</div>
 											</div>
-										</div>
-										<!--fecha linha -row  -->
+										</div>	<!--fecha linha -row  -->
+										
+										<div style="height: 300px; overflow: scroll;">
+					<table class="table" id="tabelaresultadosview">
+						<thead>
+							<tr>
+								<th scope="col">Id</th>
+								<th scope="col">Name</th>
+								<th scope="col">Select</th>
+								
+							</tr>
+						</thead>
+						<tbody> <!-- corpo da tabela -->
+							<c:forEach items="${modelLogins}" var="ml">
+								<tr>
+									<td><c:out value="${ml.id }"></c:out></td>
+									<td><c:out value="${ml.nome }"></c:out></td> <!-- btn-outline-sucess -->
+								<!-- <td><button class="btn btn-success btn-round btn-sm" type="button">sel.</button></td>  trocar por -->
+								    <td>
+								    	<a class="btn btn-success btn-round btn-sm" href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}">
+								    		sel.
+								    	</a>
+								    </td>
+								</tr>
+							
+							</c:forEach>
+						</tbody>
+					</table>
+					
+				</div>
 										
 									</div>
 								</div>
@@ -146,17 +177,18 @@
       <div class="modal-body">
 
 					<div class="input-group mb-3">
-						<input type="text" class="form-control" placeholder="Nome" aria-label="nome" id="nomeBusca" aria-describedby="basic-addon2">
+						<input type="text" class="form-control" placeholder="Name" aria-label="nome" id="nomeBusca" aria-describedby="basic-addon2">
 						<div class="input-group-append">
 							<button class="btn btn-success" type="button" onclick="buscarUsuario();">Buscar</button>
 						</div>
 					</div>
-
-					<table class="table">
+					
+				<div style="height: 300px; overflow: scroll;">
+					<table class="table" id="tabelaresultados">
 						<thead>
 							<tr>
 								<th scope="col">Id</th>
-								<th scope="col">Nome</th>
+								<th scope="col">Name</th>
 								<th scope="col">Select</th>
 								
 							</tr>
@@ -164,7 +196,10 @@
 						<tbody>
 							
 						</tbody>
-					</table>
+					</table>					
+				</div>
+				
+				<span id="totalresultados"></span>
 
 				</div> <!-- fim modal-body -->
 				
@@ -192,7 +227,18 @@
 					url : urlAction,
 					data : "nomeBusca=" + nomeBusca +'&acao=buscarUserAjax',
 					success : function (response) {
-						alert(response); 
+						//alert(response);
+						var json = JSON.parse(response);
+						
+						$('#tabelaresultados > tbody > tr').remove(); //remove linhas  de pesquisa anterior
+						
+						for (var p = 0; p < json.length; p++) {
+							$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+
+									'</td><td>'+json[p].nome+
+									'</td><td> <button onclick="verEditar('+json[p].id+')"  type="button" class="btn btn-round btn-outline-info btn-sm">Selct</button> </td></tr>');
+						}
+						
+						document.getElementById('totalresultados').textContent= 'resultados: '+json.length;
 						
 					}
 					
@@ -203,7 +249,16 @@
 				});	
 				
 			}
-		}
+		} /*fim fuction modal*/
+		
+		/*função para pegar o id da pesquisa dentro do modal*/
+	function verEditar(id) {
+			//alert(id); 
+		var urlAction = document.getElementById('formUser').action;
+		window.location.href = urlAction + '?acao=buscarEditar&id='+id; /*faz um get*/
+		
+	}
+		
 		
 		function limparForm() {
 			var elementos = document.getElementById('formUser').elements;	/*retorna os elemmentos de dentro do form*/

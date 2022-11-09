@@ -32,4 +32,7 @@ ALTER TABLE public.model_login
 INSERT INTO public.model_login(
 	login, senha)
 	VALUES ('admin','admin');
+	
+/*alterando a tabela para colocar uma coluna do tipo boolean para criar usuário admin*/	
+alter TABLE model_login add column useradmin boolean not null default false;
 
