@@ -1,3 +1,4 @@
+<%@page import="model.ModelLogin"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 	
@@ -83,6 +84,40 @@
 																<span class="form-bar"></span> <label
 																	class="float-label">Email: </label>
 															</div>
+															
+															<!-- colocando um select para escolha de opçao de tipo de usuario -->
+															<div class="form-group form-default form-static-label">
+																<select class="form-control"
+																	aria-label="Default select example" name="perfil">
+																	<option disabled="disabled">[Selecione o perfil]</option>
+																	<!-- para aparecer quando estiver selecionado na tela -->
+																	<option value="ADMIN" 
+																		<% ModelLogin modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																		if(modelLogin != null && modelLogin.getPerfil().equals("ADMIN")){
+																		out.print(" ");
+																		out.print("selected=\"selected\"");
+																		out.print(" ");}%> 
+																	>Admin</option>
+																	
+																	<option value="SECRETARIA"
+																		<% modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																		if(modelLogin != null && modelLogin.getPerfil().equals("SECRETARIA")){
+																		out.print(" ");
+																		out.print("selected=\"selected\"");
+																		out.print(" ");}%>																	
+																	>Secretária</option>
+																	<option value="AUXILIAR" 
+																		<% modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																		if(modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")){
+																		out.print(" ");
+																		out.print("selected=\"selected\"");
+																		out.print(" ");}%>
+																	>Auxiliar</option>
+																</select>
+																<span class="form-bar"></span> <label
+																	class="float-label">Perfil: </label>
+															</div>
+															
 
 															<div class="form-group form-default">
 																<input type="text" name="login" id="login"
@@ -98,6 +133,24 @@
 																	required="required" value="${modolLogin.senha}">
 																<span class="form-bar"></span> <label
 																	class="float-label">Password: </label>
+															</div>
+															
+															<!-- radio buton de sexo -->
+															<div class="form-group form-default form-static-label">
+																 <input type="radio" name="sexo" checked="checked" value="MASCULINO"
+																 	<% modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																		if(modelLogin != null && modelLogin.getSexo().equals("MASCULINO")){
+																		out.print(" ");
+																		out.print("checked=\"checked\"");
+																		out.print(" ");}%>																 
+																 >Masculino</>
+																 <input type="radio" name="sexo" value="FEMININO"
+																 	<% modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																		if(modelLogin != null && modelLogin.getSexo().equals("FEMININO")){
+																		out.print(" ");
+																		out.print("checked=\"checked\"");
+																		out.print(" ");}%>
+																 >Feminino</>
 															</div>
 
 															<!-- button Rounded -->

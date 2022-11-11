@@ -12,6 +12,9 @@ public class ModelLogin implements Serializable{ //sempre se implementa o Serial
 	private String email;
 	private String login;
 	private String senha;
+	private String sexo;
+	private boolean useradmin; //coluna criada no banco para saber quem é o usuário admin
+	private String perfil; //para o select de perfil.
 	
 	//metodo para testar se existe id
 	public boolean isNovo() {
@@ -24,6 +27,31 @@ public class ModelLogin implements Serializable{ //sempre se implementa o Serial
 	}
 	
 	//get e set
+	
+	public String getSexo() {
+		return sexo;
+	}
+	
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+	
+	public void setUseradmin(boolean useradmin) {
+		this.useradmin = useradmin;
+	}
+	
+	public boolean getUseradmin() {
+		return useradmin;
+		
+	}
+	
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+	
+	public String getPerfil() {
+		return perfil;
+	}
 	
 	public String getLogin() {
 		return login;

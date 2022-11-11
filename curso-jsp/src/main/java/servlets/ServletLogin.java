@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 
 import dao.DAOLoginRepository;
+import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,7 +26,8 @@ public class ServletLogin extends HttpServlet {
 	
 	//instanciação da classe DAOLogimRepository
 	private DAOLoginRepository daoLoginRepository = new DAOLoginRepository();
-
+	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository(); //para consulta no banco
+	
     public ServletLogin() {
 
     }
@@ -68,11 +70,17 @@ public class ServletLogin extends HttpServlet {
 					modelLogin.setLogin(login);
 					modelLogin.setSenha(senha);
 					
-					if(daoLoginRepository.validarAutenticao(modelLogin)) {/*simulando login*/		
+					if(daoLoginRepository.validarAutenticao(modelLogin)) {/*simulando login*/	
+						
+						modelLogin = daoUsuarioRepository.consultaUsuarioLogado(login);//consultar por login
 						
 						/*passa-se o usuario e o objeto da seçã, podendo ser apenas o atributo para não ficar a senha carregada
 						 * na seção*/
 						request.getSession().setAttribute("usuario", modelLogin.getLogin());//atributo de seção
+						
+						//request.getSession().setAttribute("isAdmin", modelLogin.getUseradmin());//para esconder o componente usuario para quem nao for admin
+						
+						request.getSession().setAttribute("perfil", modelLogin.getPerfil());//para retornar o perfil
 						
 						//antes de redirecionar fazer a validação da url
 						if (url == null || url.equals("null")) {

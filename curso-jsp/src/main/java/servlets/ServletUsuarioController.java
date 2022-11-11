@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
@@ -16,7 +15,7 @@ import model.ModelLogin;
  * classe Servle de controle do arquivo usuarios.jsp (chamada por ele)
  */
 
-@WebServlet(urlPatterns = {"/ServletUsuarioController"})
+//@WebServlet(urlPatterns = {"/ServletUsuarioController"})
 public class ServletUsuarioController extends ServletGenericUtil {
 	
 	private static final long serialVersionUID = 1L;	
@@ -119,6 +118,8 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String email = request.getParameter("email");
 			String login = request.getParameter("login");
 			String senha = request.getParameter("senha");
+			String perfil = request.getParameter("perfil");
+			String sexo = request.getParameter("sexo");
 
 			// iniciar objeto
 			ModelLogin modelLogin = new ModelLogin();
@@ -130,6 +131,8 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setEmail(email);
 			modelLogin.setLogin(login);
 			modelLogin.setSenha(senha);
+			modelLogin.setPerfil(perfil);
+			modelLogin.setSexo(sexo);
 			
 			//validação
 			if(daoUsuarioRepository.validaLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
