@@ -70,7 +70,15 @@
 															<!-- campo para a foto -->
 															<div class="form-group form-default input-group	mb-4">
 																<div class="input-group-prepend">
-																	<img alt="Imagem User" id="fotoembase64" src="" width="70px">
+																	<c:if test="${modolLogin.fotouser != '' && modolLogin.fotouser != null}">
+																		<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modolLogin.id}">
+																			<img alt="Imagem User" id="fotoembase64" src="${modolLogin.fotouser }" width="70px">
+																		</a>
+																	</c:if>
+																	<c:if test="${modolLogin.fotouser == '' || modolLogin.fotouser == null}" > <!-- imagem padrao-->
+																		<img alt="Imagem User" id="fotoembase64" src="assets/images/user.png" width="70px">
+																	</c:if>
+																	
 																</div>													
 																<input type="file" id="fileFoto" name="fileFoto" accept="image/*" onchange="visualizarImg('fotoembase64', 'fileFoto');" class="form-control-file" style="margin-top: 15px; margin-left: 5px;">
 															</div>
@@ -102,7 +110,7 @@
 																		if(modelLogin != null && modelLogin.getPerfil().equals("ADMIN")){
 																		out.print(" ");
 																		out.print("selected=\"selected\"");
-																		out.print(" ");}%> 
+																		out.print(" ");} %> 
 																	>Admin</option>
 																	
 																	<option value="SECRETARIA"
