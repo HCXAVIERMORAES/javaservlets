@@ -1,8 +1,8 @@
 <%@page import="model.ModelLogin"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-	
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="ISO-8859-1"%>
+ 
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +46,7 @@
 
 										<!-- copiado do form-elementes-component -->
 										<div class="row">
-											<div class="col-md-10">
+											<div class="col-md-12">
 												<div class="card">
 													<div class="card-header">
 														<h5>Cadastro de Usuários</h5>
@@ -110,7 +110,7 @@
 																		if(modelLogin != null && modelLogin.getPerfil().equals("ADMIN")){
 																		out.print(" ");
 																		out.print("selected=\"selected\"");
-																		out.print(" ");} %> 
+																		out.print(" ");}%> 
 																	>Admin</option>
 																	
 																	<option value="SECRETARIA"
@@ -131,11 +131,53 @@
 																<span class="form-bar"></span> <label
 																	class="float-label">Perfil: </label>
 															</div>
+															<!-- campos de endereço -->
+															<div class="form-group form-default form-static-label">
+																<input onblur="pesquisaCep();" type="text" name="cep" id="cep"
+																	class="form-control" required="required" autocomplete="off"
+																	value="${modolLogin.cep}"> <span
+																	class="form-bar"></span> <label class="float-label">Cep:
+																</label>
+															</div>
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="logradouro" id="logradouro"
+																	class="form-control" required="required" autocomplete="off"
+																	value="${modolLogin.logradouro}"> <span
+																	class="form-bar"></span> <label class="float-label">Logradouro:
+																</label>
+															</div>
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="bairro" id="bairro"
+																	class="form-control" required="required" autocomplete="off"
+																	value="${modolLogin.bairro}"> <span
+																	class="form-bar"></span> <label class="float-label">Bairro:
+																</label>
+															</div>
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="localidade" id="localidade"
+																	class="form-control" required="required" autocomplete="off"
+																	value="${modolLogin.localidade}"> <span
+																	class="form-bar"></span> <label class="float-label">Localidade:
+																</label>
+															</div>
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="uf" id="uf"
+																	class="form-control" required="required" autocomplete="off"
+																	value="${modolLogin.uf}"> <span
+																	class="form-bar"></span> <label class="float-label">Estado:
+																</label>
+															</div>
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="numero" id="numero"
+																	class="form-control" required="required"	 autocomplete="off"
+																	value="${modolLogin.numero}"> <span
+																	class="form-bar"></span> <label class="float-label">Número:
+																</label>
+															</div>
 															
-
-															<div class="form-group form-default">
+                                                            <div class="form-group form-default form-static-label">	
 																<input type="text" name="login" id="login"
-																	class="form-control" required="required"
+																	class="form-control" required="required" autocomplete="off"
 																	value="${modolLogin.login}"> <span
 																	class="form-bar"></span> <label class="float-label">Login:
 																</label>
@@ -280,11 +322,27 @@
 	
 <script type="text/javascript">
 
+/*javaScript para pesquisar o cep*/
+function pesquisaCep() {
+    var cep = $("#cep").val();
+    
+    $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) { 
+
+	if (!("erro" in dados)) {
+	        $("#cep").val(dados.cep);
+	        $("#logradouro").val(dados.logradouro);
+            $("#bairro").val(dados.bairro);
+            $("#localidade").val(dados.localidade);
+            $("#uf").val(dados.uf);
+	}    
+	
+    });
+}
+
 /*javascipt para adicionar foto por upload
  * função para o onchange da imagem, q recebe 2 parametros
  */
- function visualizarImg(fotoembase64, filefoto) {
-	    
+ function visualizarImg(fotoembase64, filefoto) {	    
 	    
 	    var preview = document.getElementById(fotoembase64); // campo IMG html
 	    var fileUser = document.getElementById(filefoto).files[0];
