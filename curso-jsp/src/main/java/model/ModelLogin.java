@@ -15,6 +15,8 @@ public class ModelLogin implements Serializable{ //sempre se implementa o Serial
 	private String sexo;
 	private boolean useradmin; //coluna criada no banco para saber quem é o usuário admin
 	private String perfil; //para o select de perfil.
+	private String fotouser;
+	private String extensaofotouser;
 	
 	//metodo para testar se existe id
 	public boolean isNovo() {
@@ -28,10 +30,27 @@ public class ModelLogin implements Serializable{ //sempre se implementa o Serial
 	
 	//get e set
 	
+	
 	public String getSexo() {
 		return sexo;
 	}
 	
+	public String getFotouser() {
+		return fotouser;
+	}
+
+	public void setFotouser(String fotouser) {
+		this.fotouser = fotouser;
+	}
+
+	public String getExtensaofotouser() {
+		return extensaofotouser;
+	}
+
+	public void setExtensaofotouser(String extensaofotouser) {
+		this.extensaofotouser = extensaofotouser;
+	}
+
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
