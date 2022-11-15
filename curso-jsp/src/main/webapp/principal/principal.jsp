@@ -38,7 +38,7 @@
 										<div class="row">
 										<!-- area que possuia a simulação de dados q foi retirado, onde será feito os dados 
 										do sistema atual, usar include jsp com nome do arquivo para simular(simulacao-original)-->
-										<h1>funcionalidades do sistema</h1>
+										<h1>Conteudo das paginas do sistema</h1>
 
 										</div>
 									</div>

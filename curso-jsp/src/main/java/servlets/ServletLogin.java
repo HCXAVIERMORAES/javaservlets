@@ -76,11 +76,11 @@ public class ServletLogin extends HttpServlet {
 						
 						/*passa-se o usuario e o objeto da seçã, podendo ser apenas o atributo para não ficar a senha carregada
 						 * na seção*/
-						request.getSession().setAttribute("usuario", modelLogin.getLogin());//atributo de seção
-						
+						request.getSession().setAttribute("usuario", modelLogin.getLogin());//atributo de seção						
 						//request.getSession().setAttribute("isAdmin", modelLogin.getUseradmin());//para esconder o componente usuario para quem nao for admin
-						
 						request.getSession().setAttribute("perfil", modelLogin.getPerfil());//para retornar o perfil
+						//mostrando foto do usuario na sessão
+						request.getSession().setAttribute("imagemUser", modelLogin.getFotouser());
 						
 						//antes de redirecionar fazer a validação da url
 						if (url == null || url.equals("null")) {
