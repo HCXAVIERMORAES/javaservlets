@@ -10,8 +10,7 @@ import connection.SingleConnectionBanco;
 import model.ModelLogin;
 
 public class DAOUsuarioRepository {
-	//classe de manipulação do banco de dados	
-	
+	//classe de manipulação do banco de dados
 	private Connection connection;
 	
 	// construtor
@@ -48,7 +47,7 @@ public class DAOUsuarioRepository {
 			/*para a foto deixar fazer o cadastro e depois fazer um update parra foto,
 			 * para o sql não ficar mto complexo*/
 			if (objeto.getFotouser() !=null && !objeto.getFotouser().isEmpty()) {
-				sql = "UPDATE model_login set fotouser=?, extensaofotouser=? where login = ?";
+				sql = "UPDATE model_login set fotouser=?, extensaofotouser=? where login = ? ";
 				
 				preparedSql = connection.prepareStatement(sql);
 				preparedSql.setString(1, objeto.getFotouser()); 
@@ -102,12 +101,13 @@ public class DAOUsuarioRepository {
 		return this.consultaUsuario(objeto.getLogin(), userLogado);		
 	} //metodo gravar usuario
 	
-	/*Metódo para consultar todos os usuarios*/
-	public List<ModelLogin> consultaUsuarioList(Long userLogado) throws Exception {
+	/*Metódo para consultar paginado liimitado em 5*/
+	public List<ModelLogin> consultaUsuarioListPaginado(Long userLogado, Integer offset) throws Exception {
 		
 		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
 		
-		String sql = "SELECT * FROM model_login WHERE useradmin is false and  usuario_id = "+ userLogado;
+		String sql = "SELECT * FROM model_login WHERE useradmin is false and  "
+				+ "usuario_id = "+ userLogado + " order by nome offset "+offset+" limit 5";
 		
 		PreparedStatement statemet = connection.prepareStatement(sql);
 				
@@ -122,14 +122,56 @@ public class DAOUsuarioRepository {
 			modelLogin.setLogin(resultado.getString("login"));
 			modelLogin.setPerfil(resultado.getString("perfil"));
 			modelLogin.setSexo(resultado.getString("sexo"));
-			//ModelLogin.setSenha(resultado.getString("senha"));
-		/*	modelLogin.setCep(resultado.getString("cep"));
-			modelLogin.setLogradouro(resultado.getString("logradouro"));
-			modelLogin.setBairro(resultado.getString("bairro"));
-			modelLogin.setLocalidade(resultado.getString("localidade"));
-			modelLogin.setUf(resultado.getString("uf"));
-			modelLogin.setNumero(resultado.getString("numero")); */
+						
+			retorno.add(modelLogin);		
+		}
+		
+		return retorno;
+	}
+	
+	/*metodoo para achar a quantidade de paginas*/
+	public int totalPagina(Long userLogado) throws Exception{
+		
+		String sql = "select count(1) as total from model_login where  usuario_id = "+ userLogado;
+		
+		PreparedStatement statemet = connection.prepareStatement(sql);				
+		ResultSet resultado = statemet.executeQuery();
+		resultado.next();
+		
+		Double cadastro = resultado.getDouble("total");
+		Double porpagina = 5.0;
+		Double pagina = cadastro / porpagina;
+		Double  resto = pagina % 2;
+		
+		if(resto > 0) {
+			pagina++;
+		}
+		
+		return pagina.intValue();		
+	}
+	
+	/*Metódo para consultar todos os usuarios*/
+	public List<ModelLogin> consultaUsuarioList(Long userLogado) throws Exception {
+		
+		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+		
+		String sql = "SELECT * FROM model_login WHERE useradmin is false and  "
+				+ "usuario_id = "+ userLogado + " limit 5";
+		
+		PreparedStatement statemet = connection.prepareStatement(sql);
+				
+		ResultSet resultado = statemet.executeQuery();
+		
+		while(resultado.next()) {
+			ModelLogin modelLogin = new ModelLogin();
 			
+			modelLogin.setId(resultado.getLong("id"));
+			modelLogin.setNome(resultado.getString("nome"));
+			modelLogin.setEmail(resultado.getString("email"));
+			modelLogin.setLogin(resultado.getString("login"));
+			modelLogin.setPerfil(resultado.getString("perfil"));
+			modelLogin.setSexo(resultado.getString("sexo"));
+						
 			retorno.add(modelLogin);		
 		}
 		
@@ -140,7 +182,8 @@ public class DAOUsuarioRepository {
 	public List<ModelLogin> consultaUsuarioList(String nome, Long userLogado) throws Exception {
 		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
 		
-		String sql = "SELECT * FROM model_login WHERE upper(nome) like upper(?) AND useradmin is false and  usuario_id = ?";
+		String sql = "SELECT * FROM model_login WHERE upper(nome) like upper(?) AND useradmin is false "
+				+ "and  usuario_id = ? limit 5";
 		
 		PreparedStatement statemet = connection.prepareStatement(sql);
 		
