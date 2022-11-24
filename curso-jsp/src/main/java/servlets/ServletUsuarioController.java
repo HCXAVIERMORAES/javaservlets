@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
@@ -33,7 +35,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
         
     }
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			
 		try {			
 			// metodo de deletar
@@ -64,16 +66,36 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
 				
 				String nomeBusca = request.getParameter("nomeBusca"); 
-					//System.out.println(nomeBusca); para testar 1ª partedo teste
+					
 				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultaUsuarioList(nomeBusca, super.getUserLogado(request)); 
 				
 				ObjectMapper mapper = new ObjectMapper();
 				
 				String json = mapper.writeValueAsString(dadosJsonUser);
 				
+				response.addHeader(	"totalPagina", "" 
+				+ daoUsuarioRepository.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
 				response.getWriter().write(json); //mensagem de resposta
 				
-			} /*metodo para buscar o id da pesquisa do modal*/
+			} 
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjaxPage")) {
+					
+				String nomeBusca = request.getParameter("nomeBusca"); 
+				String pagina = request.getParameter("pagina");
+				
+				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultaUsuarioListOffSet(nomeBusca, 
+						super.getUserLogado(request),Integer.parseInt(pagina)); 
+				
+				ObjectMapper mapper = new ObjectMapper();
+				
+				String json = mapper.writeValueAsString(dadosJsonUser);
+				
+				response.addHeader("totalPagina", "" 
+				+ daoUsuarioRepository.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
+				response.getWriter().write(json); //mensagem de resposta
+				
+			} 			
+			/*metodo para buscar o id da pesquisa do modal*/
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {				
 				
 				String id = request.getParameter("id");
@@ -101,7 +123,9 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			}
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
 				String idUser = request.getParameter("id");
+				
 				ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(idUser, super.getUserLogado(request));
+				
 				if(modelLogin.getFotouser() != null && !modelLogin.getFotouser().isEmpty()) {
 					response.setHeader("Content-Disposition","attachment;filename=arquivo." + modelLogin.getExtensaofotouser());
 					response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
@@ -110,7 +134,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("paginar")) {
 				Integer offset = Integer.parseInt(request.getParameter("pagina"));
 				
-				List<ModelLogin> modelLogins =daoUsuarioRepository.consultaUsuarioListPaginado(this.getUserLogado(request), offset);
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioListPaginada(this.getUserLogado(request), offset);
 				
 				request.setAttribute("modelLogins", modelLogins);
 				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
@@ -135,10 +159,9 @@ public class ServletUsuarioController extends ServletGenericUtil {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//doGet(request, response);
 		
 		try {			
-			String msg = "Dados salvos com sucesso!";
+			String msg = "Operação realizada com sucesso!";
 			
 			// 1ª intercepta os atributos do form. do usuario;
 			String id = request.getParameter("id");
@@ -155,6 +178,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String localidade = request.getParameter("localidade");
 			String uf = request.getParameter("uf");
 			String numero = request.getParameter("numero");
+			String dataNascimento = request.getParameter("dataNascimento");
 			
 
 			// iniciar objeto
@@ -176,12 +200,15 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setLocalidade(localidade);
 			modelLogin.setUf(uf);
 			modelLogin.setNumero(numero);
+			modelLogin.setDataNascimento(new Date(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento).getTime()));
 			
 			/*fazer a imagem escolhida em upload chegar no banco. É neceessario usar classes especificas 
 			 * da servlet
 			 * */
 			if (ServletFileUpload.isMultipartContent(request)){
+				
 				Part part = request.getPart("fileFoto"); /*pega foto da tela*/
+				
 				if (part.getSize() > 0) {
 					byte [] foto = IOUtils.toByteArray(part.getInputStream());/*converte a imagem para byte*/
 					/*convertendo a imagem de byte para  string. Isso é padrão para o html entender */
@@ -192,11 +219,12 @@ public class ServletUsuarioController extends ServletGenericUtil {
 					modelLogin.setExtensaofotouser(part.getContentType().split("\\/")[1]);
 				}
 			}
-			
+				
 			//validação
 			if(daoUsuarioRepository.validaLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
 				
 				msg = "Este -- LOGIN JÁ EXISTE --, por favor informe outro login!";
+				
 			} else {
 				
 				if(modelLogin.isNovo()) {

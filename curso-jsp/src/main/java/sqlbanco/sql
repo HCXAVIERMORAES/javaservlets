@@ -36,3 +36,24 @@ INSERT INTO public.model_login(
 /*alterando a tabela para colocar uma coluna do tipo boolean para criar usuário admin*/	
 alter TABLE model_login add column useradmin boolean not null default false;
 
+/*criação da tabela telefone (1 usuario para muitos telefones)*/
+CREATE SEQUENCE public.telefone_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+ALTER SEQUENCE public.telefone_seq
+    OWNER TO postgres;
+	
+CREATE TABLE telefone(
+	id integer not NULL DEFAULT nextval('telefone_seq'::regclass),
+	numero character VARYING(50) not null,
+	usuario_pai_id BIGINT not null, /*quem pertence o  telefone*/
+	usuario_cad_id BIGINT  not null,/*quem cadastrou*/
+	CONSTRAINT telefone_pkey PRIMARY KEY (id),
+	CONSTRAINT usuario_pai_fk FOREIGN KEY (usuario_pai_id) REFERENCES model_login (id),
+	CONSTRAINT usuario_cad_fk FOREIGN KEY (usuario_cad_id) REFERENCES model_login (id)
+);
+
+alter table model_login add column datanascimento date;

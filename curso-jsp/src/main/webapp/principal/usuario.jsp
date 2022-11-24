@@ -34,7 +34,6 @@
 						<jsp:include page="page-header.jsp"></jsp:include>
 
 						<!-- Page-header end -->
-
 						<div class="pcoded-inner-content">
 
 							<!-- Main-body start -->
@@ -46,10 +45,12 @@
 
 										<!-- copiado do form-elementes-component -->
 										<div class="row">
-											<div class="col-md-12">
+											<!--  <div class="col-md-12">-->
+											<div class="col-sm-12">
+											<!-- Basic Form Inputs Card Start -->
 												<div class="card">
 													<div class="card-header">
-														<h5>Cadastro de Usuários</h5>
+														<h4 class="sub-title">Cadastro de Usuários</h4>
 														<!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
 														<span id="msg">${msg}</span>
 													</div>
@@ -61,38 +62,46 @@
 															
 															<div class="form-group form-default form-static-label"> <!-- form-static-label deixa o label parado -->
 																<input type="text" name="id" id="id"
-																	class="form-control" readonly=readonly
-																	value="${modolLogin.id}"> <span
-																	class="form-bar"></span> <label class="float-label">ID:
-																</label>
+																	class="form-control" readonly="readonly"
+																	value="${modolLogin.id}"> 
+																	<span class="form-bar"></span> 
+																	<label class="float-label">ID:</label>
 															</div>
 															
 															<!-- campo para a foto -->
-															<div class="form-group form-default input-group	mb-4">
-															
+															<div class="form-group form-default input-group	mb-4">															
 																<div class="input-group-prepend">
 																	<c:if test="${modolLogin.fotouser != '' && modolLogin.fotouser != null}">
 																		<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modolLogin.id}">
 																			<img alt="Imagem User" id="fotoembase64" src="${modolLogin.fotouser }" width="70px">
 																		</a>
-																	</c:if>																	
+																	</c:if>		
+																																
 																	<c:if test="${modolLogin.fotouser == '' || modolLogin.fotouser == null}" > <!-- imagem padrao-->
 																		<img alt="Imagem User" id="fotoembase64" src="assets/images/user.png" width="70px">
-																	</c:if>
-																	
+																	</c:if>																	
 																</div>													
 																<input type="file" id="fileFoto" name="fileFoto" accept="image/*" onchange="visualizarImg('fotoembase64', 'fileFoto');" class="form-control-file" style="margin-top: 15px; margin-left: 5px;">
 															</div>
 
-															<div class="form-group form-default">
+															<div class="form-group form-default form-static-label">
 																<input type="text" name="nome" id="nome"
 																	class="form-control" required="required"
-																	value="${modolLogin.nome}"> <span
-																	class="form-bar"></span> <label class="float-label">Name:
-																</label>
+																	value="${modolLogin.nome}">
+																	 <span class="form-bar"></span>
+																	 <label class="float-label">Name:</label>
+															</div>
+															
+															<!-- campo de data de nascimento -->
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="dataNascimento" id="dataNascimento"
+																	class="form-control" required="required"
+																	value="${modolLogin.dataNascimento}">
+																	 <span class="form-bar"></span>
+																	 <label class="float-label">Dat. Nascimento:</label>
 															</div>
 
-															<div class="form-group form-default">
+															<div class="form-group form-default form-static-label">
 																<input type="email" name="email" id="email"
 																	class="form-control" autocomplete="off"
 																	required="required" value="${modolLogin.email}">
@@ -137,51 +146,44 @@
 																<input onblur="pesquisaCep();" type="text" name="cep" id="cep"
 																	class="form-control" required="required" autocomplete="off"
 																	value="${modolLogin.cep}"> <span
-																	class="form-bar"></span> <label class="float-label">Cep:
-																</label>
+																	class="form-bar"></span> <label class="float-label">Cep:</label>
 															</div>
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="logradouro" id="logradouro"
 																	class="form-control" required="required" autocomplete="off"
 																	value="${modolLogin.logradouro}"> <span
-																	class="form-bar"></span> <label class="float-label">Logradouro:
-																</label>
+																	class="form-bar"></span> <label class="float-label">Logradouro:</label>
 															</div>
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="bairro" id="bairro"
 																	class="form-control" required="required" autocomplete="off"
 																	value="${modolLogin.bairro}"> <span
-																	class="form-bar"></span> <label class="float-label">Bairro:
-																</label>
+																	class="form-bar"></span> <label class="float-label">Bairro:</label>
 															</div>
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="localidade" id="localidade"
 																	class="form-control" required="required" autocomplete="off"
 																	value="${modolLogin.localidade}"> <span
-																	class="form-bar"></span> <label class="float-label">Localidade:
-																</label>
+																	class="form-bar"></span> <label class="float-label">Localidade:</label>
 															</div>
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="uf" id="uf"
 																	class="form-control" required="required" autocomplete="off"
 																	value="${modolLogin.uf}"> <span
-																	class="form-bar"></span> <label class="float-label">Estado:
-																</label>
+																	class="form-bar"></span> <label class="float-label">Estado:</label>
 															</div>
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="numero" id="numero"
 																	class="form-control" required="required"	 autocomplete="off"
 																	value="${modolLogin.numero}"> <span
-																	class="form-bar"></span> <label class="float-label">Número:
-																</label>
+																	class="form-bar"></span> <label class="float-label">Número:</label>
 															</div>
 															
                                                             <div class="form-group form-default form-static-label">	
 																<input type="text" name="login" id="login"
 																	class="form-control" required="required" autocomplete="off"
 																	value="${modolLogin.login}"> <span
-																	class="form-bar"></span> <label class="float-label">Login:
-																</label>
+																	class="form-bar"></span> <label class="float-label">Login:</label>
 															</div>
 
 															<div class="form-group form-default">
@@ -197,9 +199,11 @@
 																 <input type="radio" name="sexo" checked="checked" value="MASCULINO"
 																 	<% modelLogin = (ModelLogin) request.getAttribute("modolLogin");
 																		if(modelLogin != null && modelLogin.getSexo().equals("MASCULINO")){
-																		out.print(" ");
-																		out.print("checked=\"checked\"");
-																		out.print(" ");}%>																 
+																			out.print(" ");
+																			out.print("checked=\"checked\"");
+																			out.print(" ");
+																		}
+																		 %>																 
 																 >Masculino</>
 																 <input type="radio" name="sexo" value="FEMININO"
 																 	<% modelLogin = (ModelLogin) request.getAttribute("modolLogin");
@@ -211,12 +215,14 @@
 															</div>
 
 															<!-- button Rounded -->
-
-															<button type="button" class="btn btn-primary btn-round waves-effect waves-light" onclick="limparForm();">Novo</button>
-															
-															<button class="btn btn-success btn-round waves-effect waves-light">Salvar</button>
-															
+															<button type="button" class="btn btn-primary btn-round waves-effect waves-light" onclick="limparForm();">Novo</button>															
+															<button class="btn btn-success btn-round waves-effect waves-light">Salvar</button>															
 															<button type="button" class="btn btn-danger btn-round waves-effect waves-light" onclick="criarDeleteComAjax()">Excluir</button>
+															<!-- link para telefone em forma de botao -->
+															<c:if test="${modolLogin.id > 0}">
+																<a href="<%= request.getContextPath() %>/ServletTelefone?iduser=${modolLogin.id}"
+																 	class="btn btn-primary btn-round waves-effect waves-light">Telefone</a>
+															</c:if>
 															<!-- botão do modal  Button trigger modal-->															
 															<button type="button" class="btn btn-secondary btn-round" data-toggle="modal" data-target="#exampleModalUsuario">Pesquisar</button>
 														
@@ -228,7 +234,7 @@
 											</div>
 										</div>	<!--fecha linha -row  -->
 										
-										<div style="height: 300px; overflow: scroll;">
+				<div style="height: 300px; overflow: scroll;">
 					<table class="table" id="tabelaresultadosview">
 						<thead>
 							<tr>
@@ -239,7 +245,7 @@
 							</tr>
 						</thead>
 						<tbody> <!-- corpo da tabela -->
-							<c:forEach items="${modelLogins}" var="ml">
+							<c:forEach items='${modelLogins}' var='ml'>
 								<tr>
 									<td><c:out value="${ml.id }"></c:out></td>
 									<td><c:out value="${ml.nome }"></c:out></td> <!-- btn-outline-sucess -->
@@ -249,12 +255,10 @@
 								    		sel.
 								    	</a>
 								    </td>
-								</tr>
-							
+								</tr>							
 							</c:forEach>
 						</tbody>
-					</table>
-					
+					</table>					
 				</div>
 				<!-- paginação -->
 									   <nav aria-label="Page navigation example">
@@ -262,9 +266,9 @@
 										   <!-- codigo java para montar as paginas -->
 											   <%
 											    	int totalPagina = (int) request.getAttribute("totalPagina");
-											   			for (int p=0; p < totalPagina; p++){
-											   				String url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina="+ (p*5);
-											   				out.print("<li class=\"page-item\"><a class=\"page-link\" href=\""+ url +"\">"+ (p+1)+"</a></li>");
+											   			for (int p = 0; p < totalPagina; p++){
+											   				String url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina="+ (p * 	5);
+											   				out.print("<li class=\"page-item\"><a class=\"page-link\" href=\""+ url +"\">"+ (p + 1)+"</a></li>");
 											   			}
 											   %>	   
 											</ul>
@@ -282,7 +286,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	 </div>
 
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
 	
@@ -322,9 +326,16 @@
 					</table>					
 				</div>
 				
+				<!-- paginação do modal -->
+				<nav aria-label="Page navigation example">
+					<ul class="pagination" id="ulPaginacaoUserAjax">
+					
+					</ul>
+				</nav>
+				
 				<span id="totalresultados"></span>
 
-				</div> <!-- fim modal-body -->
+	  </div> <!-- fim modal-body -->
 				
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-round" data-dismiss="modal">Fechar</button>
@@ -336,134 +347,211 @@
 	
 <script type="text/javascript">
 
+/*usando calendario Jquery*/
+$( function() {
+	  
+	  $("#dataNascimento").datepicker({
+		    dateFormat: 'dd/mm/yy',
+		    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+		    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+		    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+		    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+		    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+		    nextText: 'Próximo',
+		    prevText: 'Anterior'
+		});
+} );
+
+/*permitindo apenas numeros*/
+ $("#numero").keypress(function (event) {
+	return /\d/.test(String.fromCharCode(event.keyCode));
+});
+
+ $("#cep").keypress(function (event) {
+		return /\d/.test(String.fromCharCode(event.keyCode));
+	});
+/*teste de mascara deve adisionar src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js , no header*/
+$( "#cep" ).keypress(function(event) {
+        $(this).mask('00.000-000');
+    });
+
 /*javaScript para pesquisar o cep*/
 function pesquisaCep() {
-    var cep = $("#cep").val();
-    
-    $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) { 
-
+	   var cep = $("#cep").val();
+	   
+	   $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) { 
+	
 	if (!("erro" in dados)) {
 	        $("#cep").val(dados.cep);
 	        $("#logradouro").val(dados.logradouro);
-            $("#bairro").val(dados.bairro);
-            $("#localidade").val(dados.localidade);
-            $("#uf").val(dados.uf);
+	        $("#bairro").val(dados.bairro);
+	        $("#localidade").val(dados.localidade);
+	        $("#uf").val(dados.uf);
 	}    
 	
-    });
+   });
 }
 
 /*javascipt para adicionar foto por upload
  * função para o onchange da imagem, q recebe 2 parametros
  */
- function visualizarImg(fotoembase64, filefoto) {	    
-	    
-	    var preview = document.getElementById(fotoembase64); // campo IMG html
-	    var fileUser = document.getElementById(filefoto).files[0];
-	    var reader = new FileReader();
-	    
-	    reader.onloadend = function (){
-		    preview.src = reader.result; /*Carrega a foto na tela*/
-	    };
-	    
-	    if (fileUser) {
-		  reader.readAsDataURL(fileUser); /*Preview da imagem*/
-	    }else {
-		 preview.src=  '';
-	    }
-	    
-	}
+function visualizarImg(fotoembase64, filefoto) {	    
+    
+    var preview = document.getElementById(fotoembase64); // campo IMG html
+    var fileUser = document.getElementById(filefoto).files[0];
+    var reader = new FileReader();
+    
+    reader.onloadend = function (){
+	    preview.src = reader.result; /*Carrega a foto na tela*/
+    };
+    
+    if (fileUser) {
+	  reader.readAsDataURL(fileUser); /*Preview da imagem*/
+    }else {
+	 preview.src=  '';
+    }
+    
+}
+
+/*função para pegar o id da pesquisa dentro do modal*/
+function verEditar(id) {
+		//alert(id); 
+	var urlAction = document.getElementById('formUser').action;
+	window.location.href = urlAction + '?acao=buscarEditar&id='+id; /*faz um get*/
 	
-		/*funções do modal, metod debusca por ajax, modal não pode haver redirecionamento de tela*/
-		function buscarUsuario() {
+}
+
+/*função para trabalhar no ajax do modal com paginação*/
+function buscaUserPagAjax(url) {
+	
+	var urlAction = document.getElementById('formUser').action;	/*pega o action do form*/
+	var nomeBusca = document.getElementById('nomeBusca').value;		
+	
+	$.ajax({
+		method : "get",
+		url : urlAction,
+		data : url,
+		success : function (response,textStatus,xhr) {
+			//alert(response);
+			var json = JSON.parse(response);
 			
-			var nomeBusca = document.getElementById('nomeBusca').value;
+			$('#tabelaresultados > tbody > tr').remove(); //remove linhas  de pesquisa anterior
+			$("#ulPaginacaoUserAjax > li").remove();
 			
-			if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') {/*validando q tem q ter valor para buscar no banco. .trim() retira espaços vazios*/
-				
-				var urlAction = document.getElementById('formUser').action;	/*pega o action do form*/
-				
-				$.ajax({
-					method : "get",
-					url : urlAction,
-					data : "nomeBusca=" + nomeBusca +'&acao=buscarUserAjax',
-					success : function (response) {
-						//alert(response);
-						var json = JSON.parse(response);
-						
-						$('#tabelaresultados > tbody > tr').remove(); //remove linhas  de pesquisa anterior
-						
-						for (var p = 0; p < json.length; p++) {
-							$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+
-									'</td><td>'+json[p].nome+
-									'</td><td> <button onclick="verEditar('+json[p].id+')"  type="button" class="btn btn-round btn-outline-info btn-sm">Selct</button> </td></tr>');
-						}
-						
-						document.getElementById('totalresultados').textContent= 'resultados: '+json.length;
-						
-					}
-					
-				}).fail(function (xhr, status, errorThrown) {/*se houver algum erro - xhr é padrao -*/
-					
-					alert('Erro ao buscar usuário por nome' + xhr.responseText);
-					
-				});	
-				
+			for (var p = 0; p < json.length; p++) {
+				$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+
+						'</td><td>'+json[p].nome+
+						'</td><td> <button onclick="verEditar('+json[p].id+')"  type="button" class="btn btn-round btn-outline-info btn-sm">Selct</button> </td></tr>');
 			}
-		} /*fim fuction modal*/
+			
+			document.getElementById('totalresultados').textContent = 'resultados: '+json.length;
+			
+			var totalPagina = xhr.getResponseHeader("totalPagina");
+			
+			for(var p = 0; p < totalPagina; p++){
+				
+				var url = 'nomeBusca=' + nomeBusca + '&acao=buscarUserAjaxPage&pagina=' + (p * 5);
+				
+				$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+(p + 1) +'</a><li>'); 
+									
+			}
+		}
 		
-		/*função para pegar o id da pesquisa dentro do modal*/
-	function verEditar(id) {
-			//alert(id); 
-		var urlAction = document.getElementById('formUser').action;
-		window.location.href = urlAction + '?acao=buscarEditar&id='+id; /*faz um get*/
+	}).fail(function (xhr, status, errorThrown) {/*se houver algum erro - xhr é padrao -*/
 		
-	}
+		alert('Erro ao buscar usuário por nome' + xhr.responseText);
 		
+	});			
+} //fim função buscaUserPagAjax
+
+/*funções do modal, metod de busca por ajax, modal não pode haver redirecionamento de tela*/
+function buscarUsuario() {
 		
-		function limparForm() {
-			var elementos = document.getElementById('formUser').elements;	/*retorna os elemmentos de dentro do form*/
-			for(p= 0; p < elementos.length; p++) {
-				elementos[p].value ='';
+	var nomeBusca = document.getElementById('nomeBusca').value;
+	
+	if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') {/*validando q tem q ter valor para buscar no banco. .trim() retira espaços vazios*/
+		
+		var urlAction = document.getElementById('formUser').action;	/*pega o action do form*/
+		
+		$.ajax({
+			method : "get",
+			url : urlAction,
+			data : "nomeBusca=" + nomeBusca +'&acao=buscarUserAjax',
+			success : function (response,textStatus,xhr) {
+				//alert(response);
+				var json = JSON.parse(response);
+				
+				$('#tabelaresultados > tbody > tr').remove(); //remove linhas  de pesquisa anterior
+				$("#ulPaginacaoUserAjax > li").remove();
+				
+				for (var p = 0; p < json.length; p++) {
+					$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+
+							'</td><td>'+json[p].nome+
+							'</td><td> <button onclick="verEditar('+json[p].id+')"  type="button" class="btn btn-round btn-outline-info btn-sm">Selct</button> </td></tr>');
+				}
+				
+				document.getElementById('totalresultados').textContent= 'resultados: '+json.length;
+				
+				var totalPagina = xhr.getResponseHeader("totalPagina");
+				
+				for(var p = 0; p < totalPagina; p++){
+					
+					var url = 'nomeBusca=' + nomeBusca + '&acao=buscarUserAjaxPage&pagina=' + (p * 5);
+					
+					$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+(p + 1) +'</a><li>');
+											
 				}
 			}
-		
-		/* 1ª maneira de fazer o delete de dados. tracar o nome da fuction no onClick do botao excluir */
-		function criarDelete() {
-			if(confirm('Deseja realmente EXCLUIR os dados?!')){
-				var elementos = document.getElementById('formUser').method = 'get';	/*passa o metodod para get*/
-				var elementos = document.getElementById('acao').value = 'deletar';
-				var elementos = document.getElementById('formUser').submit(); //envia o formulario
-			}
-		}
-		
-		/*2ª maneira de deletar dados, usando o ajax*/
-		function criarDeleteComAjax() {
-			if(confirm('Deseja realmente EXCLUIR os dados?!')){
-				
-				var urlAction = document.getElementById('formUser').action;	/*pega o action do form*/
-				var idUser = document.getElementById('id').value; /*id do input escondido, acao*/								
-				
-				$.ajax({
-					method : "get",
-					url : urlAction,
-					data : "id=" + idUser +'&acao=deletarajax',
-					success : function (response) {
-						limparForm();
-						/*alert(response); ou*/
-						document.getElementById('msg').textContent = response;
-					}
-					
-				}).fail(function (xhr, status, errorThrown) {/*se houver algum erro - xhr é padrao -*/
-					
-					alert('Erro ao deletar usuário por id: ' + xhr.responseText);
-					
-				});				
-			}			
-		}
-		
-		
+			
+		}).fail(function (xhr, status, errorThrown) {/*se houver algum erro - xhr é padrao -*/
+			
+			alert('Erro ao buscar usuário por nome' + xhr.responseText);
+			
+		});				
+	}
+} /*fim fuction modal*/
 
+
+function limparForm() {
+	var elementos = document.getElementById('formUser').elements;	/*retorna os elemmentos de dentro do form*/
+	for(p= 0; p < elementos.length; p++) {
+		elementos[p].value ='';
+		}
+	}
+
+/* 1ª maneira de fazer o delete de dados. tracar o nome da fuction no onClick do botao excluir */
+function criarDelete() {
+	if(confirm('Deseja realmente EXCLUIR os dados?!')){
+		var elementos = document.getElementById('formUser').method = 'get';	/*passa o metodod para get*/
+		var elementos = document.getElementById('acao').value = 'deletar';
+		var elementos = document.getElementById('formUser').submit(); //envia o formulario
+	}
+}
+
+/*2ª maneira de deletar dados, usando o ajax*/
+function criarDeleteComAjax() {
+	if(confirm('Deseja realmente EXCLUIR os dados?!')){
+		
+		var urlAction = document.getElementById('formUser').action;	/*pega o action do form*/
+		var idUser = document.getElementById('id').value; /*id do input escondido, acao*/								
+		
+		$.ajax({
+			method : "get",
+			url : urlAction,
+			data : "id=" + idUser +'&acao=deletarajax',
+			success : function (response) {
+				limparForm();
+				/*alert(response); ou*/
+				document.getElementById('msg').textContent = response;
+			}
+			
+		}).fail(function (xhr, status, errorThrown) {/*se houver algum erro - xhr é padrao -*/
+			
+			alert('Erro ao deletar usuário por id: ' + xhr.responseText);
+			
+		});				
+	}			
+}
 
 </script>
 

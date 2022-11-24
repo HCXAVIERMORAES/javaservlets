@@ -12,11 +12,12 @@
    <div class="pcoded-inner-navbar main-menu">
        <div class="">
            <div class="main-menu-header">
-           <!-- inseerirndo a foto do usuario na sessao -->
+           <!-- inserirndo a foto do usuario na sessao -->
            <c:if test="${imagemUser!= '' && imagemUser != null}">
                <img class="img-80 img-radius" src="${imagemUser }" alt="User-Profile-Image">
             </c:if> 
-            <c:if test="${imagemUser== '' || imagemUser == null}">
+            
+            <c:if test="${imagemUser == '' || imagemUser == null}">
                <img class="img-80 img-radius" src="<%= request.getContextPath()%>/assets/images/avatar-4.jpg" alt="User-Profile-Image">
             </c:if>
               
@@ -49,7 +50,7 @@
      <!-- <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Layout</div>-->
        <ul class="pcoded-item pcoded-left-item">
            <li class="active">
-               <a href="<%= request.getContextPath() %>principal/principal.jsp" class="waves-effect waves-dark" style="margin-top: 10px;">
+               <a href="<%= request.getContextPath() %>/principal/principal.jsp" class="waves-effect waves-dark" style="margin-top: 10px;">
                    <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Início</span>
                    <span class="pcoded-mcaret"></span>
@@ -65,7 +66,7 @@
                <ul class="pcoded-submenu">
                	<c:if test="${perfil == 'ADMIN'}"> <!-- para esconder a barra de usuario para quem não for admin usa- 'isAdmin' -->
                    <li class=" ">
-                       <a href="<%=request.getContextPath() %>/ServletUsuarioController?acao=listarUser" class="waves-effect waves-dark">
+                       <a href="<%= request.getContextPath() %>/ServletUsuarioController?acao=listarUser" class="waves-effect waves-dark">
                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Usuário</span>
                            <span class="pcoded-mcaret"></span>

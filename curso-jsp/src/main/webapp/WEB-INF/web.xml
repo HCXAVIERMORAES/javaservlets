@@ -21,9 +21,20 @@
 		<servlet-name>ServletUsuarioController</servlet-name>
 		<servlet-class>servlets.ServletUsuarioController</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>ServletTelefone</display-name>
+		<servlet-name>ServletTelefone</servlet-name>
+		<servlet-class>servlets.ServletTelefone</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>ServletUsuarioController</servlet-name>
 		<url-pattern>/ServletUsuarioController</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletTelefone</servlet-name>
+		<url-pattern>/ServletTelefone</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>

@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 public class ModelLogin implements Serializable{ //sempre se implementa o Serializable do java.io
 	//È para a parte de compilação das classes
@@ -24,6 +25,8 @@ public class ModelLogin implements Serializable{ //sempre se implementa o Serial
 	private String localidade;
 	private String uf;
 	private String numero;
+//campo para trabalhar com data
+	private Date dataNascimento;
 	
 	//metodo para testar se existe id
 	public boolean isNovo() {
@@ -36,7 +39,15 @@ public class ModelLogin implements Serializable{ //sempre se implementa o Serial
 	}
 	
 	//get e set
-		
+	
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+	
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+	
 	public String getCep() {
 		return cep;
 	}
