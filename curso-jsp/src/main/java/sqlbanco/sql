@@ -57,3 +57,5 @@ CREATE TABLE telefone(
 );
 
 alter table model_login add column datanascimento date;
+ALTER TABLE model_login add column rendamensal numeric(6,3);
+/*(apagar coluna) alter TABLE model_login drop column rendamensal;*/

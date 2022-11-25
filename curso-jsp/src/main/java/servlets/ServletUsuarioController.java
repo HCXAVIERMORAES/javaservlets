@@ -141,6 +141,32 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
 			}
+			/*relatorio*/
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioUser")) {
+				
+				String dataInicial = request.getParameter("dataInicial");
+				String dataFinal = request.getParameter("dataFinal");
+				
+				//fazendo condição para impressao
+				if(dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
+					
+					request.setAttribute("listaUser", 
+							daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request)));
+					
+				} else {
+					
+					request.setAttribute("listaUser", 
+							daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request),
+									dataInicial, dataFinal));
+				}
+				
+				request.setAttribute("dataInicial", dataInicial);
+				request.setAttribute("dataFinal", dataFinal);
+				request.getRequestDispatcher("principal/reluser.jsp").forward(request, response);
+			}
+				
+			
+			
 			else {
 				//para recarregar apos redirecionar
 				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
@@ -179,7 +205,10 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String uf = request.getParameter("uf");
 			String numero = request.getParameter("numero");
 			String dataNascimento = request.getParameter("dataNascimento");
+			String rendaMensal = request.getParameter("rendamensal"); //trazendo da tela
 			
+			//retirando o R$ e ,
+			rendaMensal = rendaMensal.split("\\ ")[1].replaceAll("\\.", "").replaceAll("\\,", ".");
 
 			// iniciar objeto
 			ModelLogin modelLogin = new ModelLogin();
@@ -200,7 +229,14 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setLocalidade(localidade);
 			modelLogin.setUf(uf);
 			modelLogin.setNumero(numero);
-			modelLogin.setDataNascimento(new Date(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento).getTime()));
+			/*bugue da data a ser arrumado assim
+			Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento)));
+			*/
+			modelLogin.setDataNascimento(Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").
+					format(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento))));
+			
+			//convertendo
+			modelLogin.setRendamensal(Double.valueOf(rendaMensal));
 			
 			/*fazer a imagem escolhida em upload chegar no banco. É neceessario usar classes especificas 
 			 * da servlet

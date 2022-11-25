@@ -100,6 +100,13 @@
 																	 <span class="form-bar"></span>
 																	 <label class="float-label">Dat. Nascimento:</label>
 															</div>
+															<!-- campo monetario -->
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="rendamensal" id="rendamensal"
+																	class="form-control" required="required" value="${modolLogin.rendamensal}">
+																<span class="form-bar"></span> 
+																<label class="float-label">Renda Mensal:</label>
+															</div>
 
 															<div class="form-group form-default form-static-label">
 																<input type="email" name="email" id="email"
@@ -233,7 +240,7 @@
 												</div>
 											</div>
 										</div>	<!--fecha linha -row  -->
-										
+				<!-- scroll -->						
 				<div style="height: 300px; overflow: scroll;">
 					<table class="table" id="tabelaresultadosview">
 						<thead>
@@ -347,6 +354,30 @@
 	
 <script type="text/javascript">
 
+/*usando campo monetario*/
+ 
+$("#rendamensal").maskMoney({showSymbol:true, symbol:"R$ ", decimal:",", thousands:"."});
+
+/*para o bugue da renda*/
+const formatter = new Intl.NumberFormat('pt-BR', {
+    currency : 'BRL',
+    minimumFractionDigits : 2
+});
+
+$("#rendamensal").val(formatter.format($("#rendamensal").val()));
+
+$("#rendamensal").focus();
+ 
+ /*bugue da data ao retornar do banco paraser mostrado como foi salvo*/
+ var dataNascimento = $("#dataNascimento").val();
+
+var dateFormat = new Date(dataNascimento);
+
+$("#dataNascimento").val(dateFormat.toLocaleDateString('pt-BR',{timeZone: 'UTC'}));
+
+$("#nome").focus();
+ 
+ 
 /*usando calendario Jquery*/
 $( function() {
 	  

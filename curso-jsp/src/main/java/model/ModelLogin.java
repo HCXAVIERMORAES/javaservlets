@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModelLogin implements Serializable{ //sempre se implementa o Serializable do java.io
 	//È para a parte de compilação das classes
@@ -27,6 +29,11 @@ public class ModelLogin implements Serializable{ //sempre se implementa o Serial
 	private String numero;
 //campo para trabalhar com data
 	private Date dataNascimento;
+//campo monetario
+	private Double rendamensal;
+//campo para lista de telefones dos objetos
+	private List<ModelTelefone> telefones = new ArrayList<ModelTelefone>();
+			
 	
 	//metodo para testar se existe id
 	public boolean isNovo() {
@@ -39,6 +46,22 @@ public class ModelLogin implements Serializable{ //sempre se implementa o Serial
 	}
 	
 	//get e set
+	
+	public void setTelefones(List<ModelTelefone> telefones) {
+		this.telefones = telefones;
+	}
+	
+	public List<ModelTelefone> getTelefones() {
+		return telefones;
+	}
+	
+	public void setRendamensal(Double rendamensal) {
+		this.rendamensal = rendamensal;
+	}
+	
+	public Double getRendamensal() {
+		return rendamensal;
+	}
 	
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
@@ -169,5 +192,16 @@ public class ModelLogin implements Serializable{ //sempre se implementa o Serial
 		this.email = email;
 	}
 	
+	//criando um objeto para mostra telefone
+	public String getMostraTelefoneRel() {
+		
+		String fone = "Telefone:\n";
+		for(ModelTelefone modelTelefone : telefones) {
+			fone += modelTelefone.getNumero() + "\n";
+		}
+		
+		return fone;
+		
+	}
 		
 }

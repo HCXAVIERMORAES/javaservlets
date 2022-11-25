@@ -1,22 +1,28 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import connection.SingleConnectionBanco;
 import model.ModelLogin;
+import model.ModelTelefone;
 
 public class DAOUsuarioRepository {
 //classe de manipulação do banco de dados
-private Connection connection;
+	private Connection connection;
+
+//instanciando o DAOTelefoneRepository para popular a lista de telefones
+	//private DAOTelefoneRepository daoTelefoneRepository = new DAOTelefoneRepository();
 
 // construtor
-public DAOUsuarioRepository() {
-	connection = SingleConnectionBanco.getConnection();
-}
+	public DAOUsuarioRepository() {
+		connection = SingleConnectionBanco.getConnection();
+	}
 
 //metodo de inserção no Banco (insert)
 public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Exception{		
@@ -24,8 +30,8 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 	if(objeto.isNovo()) { /*gravar um novo*/
 					
 		String sql = "INSERT INTO model_login(login, senha, nome, email, usuario_id, perfil, sexo, "
-				+ "cep, logradouro, bairro, localidade, uf, numero, dataNascimento)"
-				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";// script sql
+				+ "cep, logradouro, bairro, localidade, uf, numero, dataNascimento, rendamensal)"
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";// script sql
 
 		PreparedStatement preparedSql = connection.prepareStatement(sql);
 		preparedSql.setString(1, objeto.getLogin()); // seguir a ordem da tabela do banco
@@ -42,6 +48,7 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 		preparedSql.setString(12, objeto.getUf());
 		preparedSql.setString(13, objeto.getNumero());
 		preparedSql.setDate(14, objeto.getDataNascimento());
+		preparedSql.setDouble(15, objeto.getRendamensal());
 		
 		preparedSql.execute(); //executa
 		connection.commit(); //salva	
@@ -63,8 +70,9 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 	} else {
 		
 		String sql = "UPDATE model_login SET login=?, senha=?, nome=?, email=?, perfil=?, sexo=?,"
-				+" cep=?, logradouro=?, bairro=?, localidade=?, uf=?, numero=?, datanascimento=?"
-				+"  WHERE id = "+objeto.getId()+";";
+				+" cep=?, logradouro=?, bairro=?, localidade=?, uf=?, numero=?, datanascimento=?, "
+				+ "rendamensal=? "
+				+"WHERE id = "+objeto.getId()+";";
 		
 		PreparedStatement prepareSql = connection.prepareStatement(sql);
 		
@@ -82,6 +90,7 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 		prepareSql.setString(11, objeto.getUf());
 		prepareSql.setString(12, objeto.getNumero());
 		prepareSql.setDate(13, objeto.getDataNascimento());
+		prepareSql.setDouble(14, objeto.getRendamensal());
 		
 		prepareSql.executeUpdate();
 		connection.commit();
@@ -176,6 +185,71 @@ public List<ModelLogin> consultaUsuarioList(Long userLogado) throws Exception {
 		modelLogin.setLogin(resultado.getString("login"));
 		modelLogin.setPerfil(resultado.getString("perfil"));
 		modelLogin.setSexo(resultado.getString("sexo"));
+					
+		retorno.add(modelLogin);		
+	}
+	
+	return retorno;
+}	
+
+//metodo qu retorna todos os usuarios cadastrados sem limite para usar em relatorio
+public List<ModelLogin> consultaUsuarioListRel(Long userLogado) throws Exception {
+	
+	List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+	
+	String sql = "SELECT * FROM model_login WHERE useradmin is false and  "
+			+ "usuario_id = "+ userLogado	;
+	
+	PreparedStatement statemet = connection.prepareStatement(sql);
+			
+	ResultSet resultado = statemet.executeQuery();
+	
+	while(resultado.next()) {
+		ModelLogin modelLogin = new ModelLogin();
+		
+		modelLogin.setId(resultado.getLong("id"));
+		modelLogin.setNome(resultado.getString("nome"));
+		modelLogin.setEmail(resultado.getString("email"));
+		modelLogin.setLogin(resultado.getString("login"));
+		modelLogin.setPerfil(resultado.getString("perfil"));
+		modelLogin.setSexo(resultado.getString("sexo"));
+		
+		//lista dos telefones
+		modelLogin.setTelefones(this.listFone(modelLogin.getId()));
+					
+		retorno.add(modelLogin);		
+	}
+	
+	return retorno;
+}	
+
+//metodo que recebe a listade telefones e as datas
+//metodo qu retorna todos os usuarios cadastrados sem limite para usar em relatorio
+public List<ModelLogin> consultaUsuarioListRel(Long userLogado, String dataInicial, String dataFinal) throws Exception {
+	
+	List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+	
+	String sql = "SELECT * FROM model_login WHERE useradmin is false and  "
+			+ "usuario_id = "+ userLogado +" and datanascimento >= ? and datanascimento <= ?";
+	
+	PreparedStatement statemet = connection.prepareStatement(sql);
+	statemet.setDate(1, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))));
+	statemet.setDate(2, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal))));
+			
+	ResultSet resultado = statemet.executeQuery();
+	
+	while(resultado.next()) {
+		ModelLogin modelLogin = new ModelLogin();
+		
+		modelLogin.setId(resultado.getLong("id"));
+		modelLogin.setNome(resultado.getString("nome"));
+		modelLogin.setEmail(resultado.getString("email"));
+		modelLogin.setLogin(resultado.getString("login"));
+		modelLogin.setPerfil(resultado.getString("perfil"));
+		modelLogin.setSexo(resultado.getString("sexo"));
+		
+		//lista dos telefones
+		modelLogin.setTelefones(this.listFone(modelLogin.getId()));
 					
 		retorno.add(modelLogin);		
 	}
@@ -301,6 +375,8 @@ public ModelLogin consultaUsuarioLogado(String login) throws Exception 	{
 		modelLogin.setLocalidade(resultado.getString("localidade"));
 		modelLogin.setUf(resultado.getString("uf"));
 		modelLogin.setNumero(resultado.getString("numero"));
+		modelLogin.setDataNascimento(resultado.getDate("datanascimento"));
+		modelLogin.setRendamensal(resultado.getDouble("rendamensal"));
 	}
 	
 	return modelLogin;					
@@ -336,6 +412,8 @@ public ModelLogin consultaUsuario(String login) throws Exception 	{
 		modelLogin.setLocalidade(resultado.getString("localidade"));
 		modelLogin.setUf(resultado.getString("uf"));
 		modelLogin.setNumero(resultado.getString("numero"));
+		modelLogin.setDataNascimento(resultado.getDate("datanascimento"));
+		modelLogin.setRendamensal(resultado.getDouble("rendamensal"));
 	}
 	
 	return modelLogin;					
@@ -372,6 +450,8 @@ public ModelLogin consultaUsuario(String login, Long userLogado) throws Exceptio
 		modelLogin.setLocalidade(resultado.getString("localidade"));
 		modelLogin.setUf(resultado.getString("uf"));
 		modelLogin.setNumero(resultado.getString("numero"));
+		modelLogin.setDataNascimento(resultado.getDate("datanascimento"));
+		modelLogin.setRendamensal(resultado.getDouble("rendamensal"));
 	}
 	
 	return modelLogin;					
@@ -409,6 +489,8 @@ public ModelLogin consultaUsuarioID(Long id) throws Exception 	{
 		modelLogin.setLocalidade(resultado.getString("localidade"));
 		modelLogin.setUf(resultado.getString("uf"));
 		modelLogin.setNumero(resultado.getString("numero"));
+		modelLogin.setDataNascimento(resultado.getDate("datanascimento"));
+		modelLogin.setRendamensal(resultado.getDouble("rendamensal"));
 	}
 	
 	return modelLogin;					
@@ -447,6 +529,8 @@ public ModelLogin consultaUsuarioID(String id, Long userLogado) throws Exception
 		modelLogin.setLocalidade(resultado.getString("localidade"));
 		modelLogin.setUf(resultado.getString("uf"));
 		modelLogin.setNumero(resultado.getString("numero"));
+		modelLogin.setDataNascimento(resultado.getDate("datanascimento"));
+		modelLogin.setRendamensal(resultado.getDouble("rendamensal"));
 	}
 	
 	return modelLogin;					
@@ -473,6 +557,32 @@ public void deletarUser(String idUser) throws Exception {
 		prepareSql.setLong(1, Long.parseLong(idUser));
 		prepareSql.executeUpdate();
 		connection.commit();		
+	}
+
+//lista de retorno dos telefones copiado do DAOTelefoneRepository
+	public List<ModelTelefone> listFone(Long idUserPai) throws Exception {
+		
+		List<ModelTelefone> retorno = new ArrayList<ModelTelefone>();
+		
+		String sql = "SELECT * from telefone where usuario_pai_id = ?;";
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setLong(1, idUserPai);
+		
+		ResultSet rs = preparedStatement.executeQuery();
+		
+		while (rs.next()) {
+			ModelTelefone modelTelefone = new ModelTelefone();
+			
+			modelTelefone.setId(rs.getLong("id"));
+			modelTelefone.setNumero(rs.getString("numero"));
+			modelTelefone.setUsuario_cad_id(this.consultaUsuarioID(rs.getLong("usuario_cad_id")));
+			modelTelefone.setUsuario_pai_id(this.consultaUsuarioID(rs.getLong("usuario_pai_id")));
+			
+			retorno.add(modelTelefone);			
+		}
+		
+		return retorno;		
 	}
 	
 } //fim classe DAOUsuarioRepository
