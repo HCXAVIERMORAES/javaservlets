@@ -67,44 +67,21 @@
 																		<input type="text" class="form-control"	id="dataFinal" name="dataFinal" value="${dataFinal}">																	
 																</div>
 																
-																<div class="col-auto my-1">
-																<!-- 	<button type="submit" class="btn btn-primary mb-2">Imprimir</button> -->
-																<!-- alterando para impressao de pdf <button type="submit" class="btn btn-primary btn-round waves-effect waves-light mb-2">Imp. Relatório</button>-->
-																	<button type="button" onclick="imprimirHtml();" class="btn btn-primary btn-round waves-effect waves-light mb-2">Imprimir Rel.</button>
-																	<button type="button" onclick="imprimirPdf();" class="btn btn-primary btn-round waves-effect waves-light mb-2">Imprimir PDF</button>
-																	<button type="button" onclick="imprimirExcel();" class="btn btn-primary btn-round waves-effect waves-light mb-2">Imprimir Excel</button>
+																<div class="col-auto my-1">																
+																	<button type="button" onclick="gerarGrafico();" class="btn btn-primary btn-round waves-effect waves-light mb-2">Gerar Graf.</button>																	
 																</div>
 																
 															</div>
 
 														</form>
 														<!-- pegando o listeUser -->
-														<!-- scroll -->						
-				<div style="height: 300px; overflow: scroll;">
-					<table class="table" id="tabelaresultadosview">
-						<thead>
-							<tr>
-								<th scope="col">Id</th>
-								<th scope="col">Name</th>	
-							</tr>
-						</thead>
-						<tbody> <!-- corpo da tabela -->
-							<c:forEach items='${listaUser}' var='ml'>
-								<tr>
-									<td><c:out value="${ml.id }"></c:out></td>
-									<td><c:out value="${ml.nome }"></c:out></td> 						    	
-								</tr>
-								<c:forEach items="${ml.telefones}" var="fone">
-									<tr>
-										<td style="font-size: 10px;"><c:out value="${fone.numero}"></c:out> </td>
-									</tr>
-								</c:forEach>							
-							</c:forEach>
-						</tbody>
-					</table>					
-				</div>
+														<!-- scroll grafico-->						
+														<div style="height: 500px; overflow: scroll;">
+															<div>
+																<canvas id="myChart"></canvas>
+															</div>
+														</div>
 
-														<span id="msg">${msg}</span>
 													</div>
 												</div>
 											</div>
@@ -123,30 +100,79 @@
 	</div>
 
 	<!-- java script -->
-	<jsp:include page="javascriptfile.jsp"></jsp:include>
+<jsp:include page="javascriptfile.jsp"></jsp:include>
+	
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		
 <script type="text/javascript">
 
-/*função de impressao de relatorio na tela*/
-function imprimirHtml() {
-    document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioUser';
-    $("#formUser").submit();
+/*função de gerar grafico*/
+var myChart = new Chart(document.getElementById('myChart'));
+
+function gerarGrafico() {    
+    
+     var urlAction = document.getElementById('formUser').action;
+     var dataInicial = document.getElementById('dataInicial').value;
+     var dataFinal = document.getElementById('dataFinal').value;
+     
+	 $.ajax({
+	     
+	     method: "get",
+	     url : urlAction,
+	     data : "dataInicial=" + dataInicial + '&dataFinal=' + dataFinal + '&acao=graficoSalario',
+	     success: function (response) {
+		 
+		    var json = JSON.parse(response);
+		    
+		    myChart.destroy();
+		
+		    myChart = new Chart(
+			    document.getElementById('myChart'),
+			    {
+				  type: 'line',
+				  data: {
+				      labels: json.perfils,
+				      datasets: [{
+				        label: 'Gráfico de média salarial por tipo',
+				        backgroundColor: 'rgb(255, 99, 132)',
+				        borderColor: 'rgb(255, 99, 132)',
+				        data: json.salarios,
+				      }]
+				    },
+				  options: {}
+				}
+			);
+		  
+	     }
+	     
+	 }).fail(function(xhr, status, errorThrown){
+	    alert('Erro ao buscar dados para o grafico ' + xhr.responseText);
+	 });
+	 
 }
 
-/*imprimir pdf*/
-function imprimirPdf() {
-    document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioPDF';
-    $("#formUser").submit();
-    return false;	
-}
+/*exemplo do site https://www.chartjs.org/docs/latest/getting-started/
+const ctx = document.getElementById('myChart');
 
-/*imprime relatorio em excel*/
-function imprimirExcel() {
-    document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioExcel';
-    $("#formUser").submit();
-    return false;	
-}
-
-
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+*/
 /*usando calendario Jquery para transformar os campos em datas*/
 $( function() {
 	  

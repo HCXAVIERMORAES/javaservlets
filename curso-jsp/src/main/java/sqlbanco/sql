@@ -59,3 +59,19 @@ CREATE TABLE telefone(
 alter table model_login add column datanascimento date;
 ALTER TABLE model_login add column rendamensal numeric(6,3);
 /*(apagar coluna) alter TABLE model_login drop column rendamensal;*/
+
+/*versionador de banco. 1ª sequencia, 2ª tabela*/
+CREATE SEQUENCE public.versionadorbanco_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+    
+ CREATE TABLE public.versionadorbanco
+(
+    id integer NOT NULL DEFAULT nextval('versionadorbanco_seq'::regclass),
+    arquivo_sql character varying(50) NOT NULL,
+    CONSTRAINT id_pk PRIMARY KEY (id)
+	);
+    

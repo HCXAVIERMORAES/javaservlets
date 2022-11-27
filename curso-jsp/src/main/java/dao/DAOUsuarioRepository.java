@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import beandto.BeanDtoGraficoSalarioUser;
 import connection.SingleConnectionBanco;
 import model.ModelLogin;
 import model.ModelTelefone;
@@ -22,6 +23,70 @@ public class DAOUsuarioRepository {
 // construtor
 	public DAOUsuarioRepository() {
 		connection = SingleConnectionBanco.getConnection();
+	}
+	
+//metodo de media salarial por perfil em grafico
+	public BeanDtoGraficoSalarioUser montarGraficoMediaSalario(Long userLogado, String dataInicial, String dataFinal) throws Exception {
+
+		String sql = "select avg(rendamensal) as media_salarial, perfil from model_login "
+				+ "where usuario_id  = ? and datanascimento >= ? and datanascimento <= ? "
+				+ "group by perfil";
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		
+		preparedStatement.setLong(1, userLogado);
+		preparedStatement.setDate(2, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))));
+		preparedStatement.setDate(3, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal))));
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+		
+		List<String> perfils = new ArrayList<String>();
+		List<Double> salarios = new ArrayList<Double>();
+		
+		BeanDtoGraficoSalarioUser beanDtoGraficoSalarioUser = new BeanDtoGraficoSalarioUser();
+		
+		while (resultSet.next()) {
+			Double media_salarial = resultSet.getDouble("media_salarial");
+			String perfil = resultSet.getString("perfil");
+			
+			perfils.add(perfil);
+			salarios.add(media_salarial);
+		}
+		
+		beanDtoGraficoSalarioUser.setPerfils(perfils);
+		beanDtoGraficoSalarioUser.setSalarios(salarios);
+		
+		return beanDtoGraficoSalarioUser;
+	}
+	
+//metodo de salario
+public BeanDtoGraficoSalarioUser montarGraficoMediaSalario(Long userLogado) throws Exception {
+		
+		String sql = "select avg(rendamensal) as media_salarial, perfil from model_login where usuario_id  = ? group by perfil";
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		
+		preparedStatement.setLong(1, userLogado);
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+		
+		List<String> perfils = new ArrayList<String>();
+		List<Double> salarios = new ArrayList<Double>();
+		
+		BeanDtoGraficoSalarioUser beanDtoGraficoSalarioUser = new BeanDtoGraficoSalarioUser();
+		
+		while (resultSet.next()) {
+			Double media_salarial = resultSet.getDouble("media_salarial");
+			String perfil = resultSet.getString("perfil");
+			
+			perfils.add(perfil);
+			salarios.add(media_salarial);
+		}
+		
+		beanDtoGraficoSalarioUser.setPerfils(perfils);
+		beanDtoGraficoSalarioUser.setSalarios(salarios);
+		
+		return beanDtoGraficoSalarioUser;
 	}
 
 //metodo de inserção no Banco (insert)
@@ -213,6 +278,7 @@ public List<ModelLogin> consultaUsuarioListRel(Long userLogado) throws Exception
 		modelLogin.setLogin(resultado.getString("login"));
 		modelLogin.setPerfil(resultado.getString("perfil"));
 		modelLogin.setSexo(resultado.getString("sexo"));
+		modelLogin.setDataNascimento(resultado.getDate("datanascimento"));
 		
 		//lista dos telefones
 		modelLogin.setTelefones(this.listFone(modelLogin.getId()));
@@ -247,6 +313,7 @@ public List<ModelLogin> consultaUsuarioListRel(Long userLogado, String dataInici
 		modelLogin.setLogin(resultado.getString("login"));
 		modelLogin.setPerfil(resultado.getString("perfil"));
 		modelLogin.setSexo(resultado.getString("sexo"));
+		modelLogin.setDataNascimento(resultado.getDate("datanascimento"));
 		
 		//lista dos telefones
 		modelLogin.setTelefones(this.listFone(modelLogin.getId()));
