@@ -6,12 +6,13 @@ import java.util.List;
 import dao.DAOTelefoneRepository;
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 import model.ModelTelefone;
 
-//@WebServlet("/ServletTelefone")
+@WebServlet("/ServletTelefone")
 public class ServletTelefone extends ServletGenericUtil {
 
 	private static final long serialVersionUID = 1L;
