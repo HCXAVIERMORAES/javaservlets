@@ -26,6 +26,7 @@ import model.ModelLogin;
 import util.ReportUtil;
 /**
  * classe Servle de controle do arquivo usuarios.jsp (chamada por ele)
+ * usa tomcat v10.0
  */
 
 @MultipartConfig /*para trabalhar com imagem no banco*/
